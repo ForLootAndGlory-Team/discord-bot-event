@@ -1,18 +1,17 @@
 require('dotenv').config();
 const abi = require("./abi.json");
 const RoyaltyABI = require("./RoyaltyABI.json");
-const { token } = require('./config.json');
+const { rpcURL, botHost, uiHost } = require('./const')
 const ethers = require('ethers');
 const Web3 = require("web3");
 const express = require('express');
 const { port, guildId } = require('./config.json');
-const rpcURL = "https://polygon-mainnet.g.alchemy.com/v2/yuyhEgKoM-VxgBB9yLAHS41TKRXY6AV2" //mainnet
 const app = express();
+const wait = require('node:timers/promises').setTimeout;
 const web3 = new Web3(
-    // Replace YOUR-PROJECT-ID with a Project ID from your Infura Dashboard
     new Web3.providers.WebsocketProvider(rpcURL)
 );
-const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
+const { Client, GatewayIntentBits, EmbedBuilder, Partials, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const network = {
     name: "polygon",
     chainId: 137,
@@ -22,10 +21,19 @@ const provider = ethers.getDefaultProvider(network);
 
 const scholarship = new ethers.Contract('0x3fCaB5ddc6bb4f7999044cec9Cd994F0602B507C', abi, provider);
 const royalty = new ethers.Contract('0x0d63b9848F35fA014Aa5a6e3e500cf18e20fbE95', RoyaltyABI, provider)
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({
+    intents: [
+        GatewayIntentBits.DirectMessages,
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildBans,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
+    ],
+    partials: [Partials.Channel],
+});
 
 const assignRole = (user, amountStaked) => {
-    
+
     if (amountStaked >= 100 && amountStaked < 500) user.roles.add('1018914941442465863'), user.roles.remove('1018914991644086439') // add Looter remove Fleet
     else if (amountStaked >= 500) user.roles.add('1018914991644086439'), user.roles.remove('1018914941442465863') // add Fleet remove Looter
     else user.roles.add('1018915028092596235'), user.roles.remove('1018914941442465863'), user.roles.remove('1018914991644086439') // add Fresh remove Looter and Fleet
@@ -41,7 +49,7 @@ async function ClaimRole(wallet, mes, userID) {
         let _balance = await royalty.addressStakedBalance(wallet);
         let balance = _balance * 10 ** 18;
         const guild = await client.guilds.fetch(guildId)
-        const user =  await guild.members.fetch(userID)
+        const user = await guild.members.fetch(userID)
         assignRole(user, balance);
         console.log('success recover address')
     } else {
@@ -54,7 +62,7 @@ app.get('/', (req, res) => {
     console.log(req.query.mes)
     console.log(req.query.wallet)
     ClaimRole(req.query.wallet, req.query.mes, req.query.userID)
-    res.redirect('http://localhost:3000/success-role')
+    res.redirect(`${uiHost}/success-role`)
 });
 
 app.listen(port, () => console.log(`App listening at http://localhost:${port}`));
@@ -72,7 +80,7 @@ async function EmedRequest(event, requestInfos) {
     const Embed = new EmbedBuilder()
         .setColor(0x0099FF)
         .setTitle(`${event}`)
-        .setURL('https://discord.js.org/')
+        .setURL('https://forlootandglory.io/')
         .setDescription(`Scholarship ${event}`)
         .addFields(
             { name: 'Game', value: `${GameName}` },
@@ -89,7 +97,7 @@ async function EmedGame(event, gameName) {
     const Embed = new EmbedBuilder()
         .setColor(0x0099FF)
         .setTitle(`${event}`)
-        .setURL('https://discord.js.org/')
+        .setURL('https://forlootandglory.io')
         .setDescription(`Scholarship ${event}`)
         .addFields(
             { name: 'Game', value: `${GameName}` },
@@ -100,7 +108,7 @@ async function EmedGame(event, gameName) {
 }
 
 client.once('ready', async () => {
-    console.log('Ready!',);
+    console.log('Scholar Boat Ready!');
 
     const ChannelRequestCreated = client.channels.cache.get('910189947569451012');
     const ChannelRequestAccepted = client.channels.cache.get('910189947569451012');
@@ -130,6 +138,29 @@ client.once('ready', async () => {
         let Embed = await EmedGame('Game Remove', gameName)
         ChannelGameAdd.send({ embeds: [Embed] })
     });
+});
+
+client.on('interactionCreate', async interaction => {
+    if (!interaction.isChatInputCommand()) return;
+
+    if (interaction.commandName === 'role') {
+        const row = new ActionRowBuilder()
+            .addComponents(
+                new ButtonBuilder()
+                    .setLabel('Claim Role!')
+                    .setURL(`${uiHost}/claim-role`)
+                    .setStyle(ButtonStyle.Link)
+            );
+
+        const embed = new EmbedBuilder()
+            .setColor(0x0099FF)
+            .setTitle('Claim your Role')
+            .setURL('https://forlootandglory.io')
+            .setDescription('If you are a FLAG Royalty Staker take your role below!')
+            .setFooter({ text: 'For Loot And Glory', iconURL: 'https://forlootandglory.eth.limo/token_logo.png' });
+
+        await interaction.reply({ ephemeral: false, embeds: [embed], components: [row] });
+    }
 });
 
 client.login(process.env.TOKEN);
