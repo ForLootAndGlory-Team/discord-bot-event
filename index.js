@@ -6,17 +6,17 @@ const ethers = require('ethers');
 const Web3 = require("web3");
 const express = require('express');
 const { port, guildId } = require('./config.json');
-
+const rpcURL = "https://polygon-mainnet.g.alchemy.com/v2/yuyhEgKoM-VxgBB9yLAHS41TKRXY6AV2" //mainnet
 const app = express();
 const web3 = new Web3(
     // Replace YOUR-PROJECT-ID with a Project ID from your Infura Dashboard
-    new Web3.providers.WebsocketProvider(process.env.ALCHEMY_URL)
+    new Web3.providers.WebsocketProvider(rpcURL)
 );
 const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const network = {
     name: "polygon",
     chainId: 137,
-    _defaultProvider: (providers) => new providers.JsonRpcProvider(process.env.ALCHEMY_URL)
+    _defaultProvider: (providers) => new providers.JsonRpcProvider(rpcURL)
 };
 const provider = ethers.getDefaultProvider(network);
 
@@ -54,7 +54,7 @@ app.get('/', (req, res) => {
     console.log(req.query.mes)
     console.log(req.query.wallet)
     ClaimRole(req.query.wallet, req.query.mes, req.query.userID)
-    res.redirect('http://localhost:3000/claim-role')
+    res.redirect('http://localhost:3000/success-role')
 });
 
 app.listen(port, () => console.log(`App listening at http://localhost:${port}`));
@@ -132,4 +132,4 @@ client.once('ready', async () => {
     });
 });
 
-client.login(token);
+client.login(process.env.TOKEN);
