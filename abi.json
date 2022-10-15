@@ -26,8 +26,31 @@
 		"inputs": [
 			{
 				"internalType": "string",
+				"name": "_chainName",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_chainId",
+				"type": "uint256"
+			}
+		],
+		"name": "addChainId",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
 				"name": "gameName_",
 				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "chainId",
+				"type": "uint256"
 			}
 		],
 		"name": "addGame",
@@ -44,6 +67,24 @@
 			}
 		],
 		"name": "createRequest",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_requestId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_memo_manager",
+				"type": "string"
+			}
+		],
+		"name": "handleMemoManager",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -111,24 +152,6 @@
 			},
 			{
 				"internalType": "string",
-				"name": "_memo_manager",
-				"type": "string"
-			}
-		],
-		"name": "handleMemoManager",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_requestId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
 				"name": "_memo_scholar",
 				"type": "string"
 			}
@@ -160,6 +183,19 @@
 	{
 		"inputs": [
 			{
+				"internalType": "uint256",
+				"name": "_chainId",
+				"type": "uint256"
+			}
+		],
+		"name": "removeChainId",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "string",
 				"name": "gameName_",
 				"type": "string"
@@ -174,7 +210,25 @@
 		"inputs": [
 			{
 				"internalType": "uint256",
+				"name": "_chainId",
+				"type": "uint256"
+			}
+		],
+		"name": "RemoveProfilAddress",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
 				"name": "_requestId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_feedback",
 				"type": "uint256"
 			}
 		],
@@ -194,19 +248,19 @@
 		"anonymous": false,
 		"inputs": [
 			{
-				"indexed": false,
+				"indexed": true,
 				"internalType": "uint256",
 				"name": "requestId",
 				"type": "uint256"
 			},
 			{
-				"indexed": false,
+				"indexed": true,
 				"internalType": "uint256",
 				"name": "gameID",
 				"type": "uint256"
 			},
 			{
-				"indexed": false,
+				"indexed": true,
 				"internalType": "address",
 				"name": "scholar",
 				"type": "address"
@@ -219,19 +273,19 @@
 		"anonymous": false,
 		"inputs": [
 			{
-				"indexed": false,
+				"indexed": true,
 				"internalType": "uint256",
 				"name": "requestId",
 				"type": "uint256"
 			},
 			{
-				"indexed": false,
+				"indexed": true,
 				"internalType": "uint256",
 				"name": "gameID",
 				"type": "uint256"
 			},
 			{
-				"indexed": false,
+				"indexed": true,
 				"internalType": "address",
 				"name": "scholar",
 				"type": "address"
@@ -274,6 +328,37 @@
 			}
 		],
 		"name": "transferOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_chainId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_data",
+				"type": "string"
+			}
+		],
+		"name": "UpdateProfilAddress",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_discordId",
+				"type": "string"
+			}
+		],
+		"name": "UpdateProfilDiscordId",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -499,6 +584,95 @@
 	},
 	{
 		"inputs": [],
+		"name": "fetchChainIds",
+		"outputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_user",
+				"type": "address"
+			}
+		],
+		"name": "fetchDiscordId",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_scholar",
+				"type": "address"
+			}
+		],
+		"name": "fetchFeedBackAverage",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_scholar",
+				"type": "address"
+			}
+		],
+		"name": "fetchFeedBackLength",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_gameID",
+				"type": "uint256"
+			}
+		],
+		"name": "fetchGameChainID",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
 		"name": "fetchGameIds",
 		"outputs": [
 			{
@@ -539,6 +713,87 @@
 				"internalType": "uint256",
 				"name": "startTime",
 				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_requestId",
+				"type": "uint256"
+			}
+		],
+		"name": "fetchScholarRequestDiscordId",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_user",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_chainId",
+				"type": "uint256"
+			}
+		],
+		"name": "fetchUserChainAddress",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "chainAddress",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_ChainName",
+				"type": "string"
+			}
+		],
+		"name": "getChainId",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_ChainId",
+				"type": "uint256"
+			}
+		],
+		"name": "getChainString",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
 			}
 		],
 		"stateMutability": "view",

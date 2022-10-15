@@ -19,7 +19,7 @@ const network = {
 };
 const provider = ethers.getDefaultProvider(network);
 
-const scholarship = new ethers.Contract('0x3fCaB5ddc6bb4f7999044cec9Cd994F0602B507C', abi, provider);
+const scholarship = new ethers.Contract('0xea3A2293D9d9F4c34Ae67C7Cc28c629B75b03deC', abi, provider);
 const royalty = new ethers.Contract('0x0d63b9848F35fA014Aa5a6e3e500cf18e20fbE95', RoyaltyABI, provider)
 const client = new Client({
     intents: [
@@ -34,10 +34,10 @@ const client = new Client({
 
 const assignRole = (user, amountStaked) => {
 
-    if (amountStaked >= 100 && amountStaked < 500) user.roles.add('1018914941442465863'), user.roles.remove('1018914991644086439') // add Looter remove Fleet
-    else if (amountStaked >= 500) user.roles.add('1018914991644086439'), user.roles.remove('1018914941442465863') // add Fleet remove Looter
-    else user.roles.add('1018915028092596235'), user.roles.remove('1018914941442465863'), user.roles.remove('1018914991644086439') // add Fresh remove Looter and Fleet
-    let channel = client.channels.cache.get('910189947569451012');
+    if (amountStaked >= 100 && amountStaked < 500) user.roles.add('880394877202997298'), user.roles.remove('883601505033269309') // add Looter remove Fleet
+    else if (amountStaked >= 500) user.roles.add('883601505033269309'), user.roles.remove('880394877202997298') // add Fleet remove Looter
+    else user.roles.add('880394760290963457'), user.roles.remove('880394877202997298'), user.roles.remove('883601505033269309') // add Fresh remove Looter and Fleet
+    let channel = client.channels.cache.get('916655352827744326');
     channel.send("<@" + user + "> Your Role has been successfully assigned");
 }
 
@@ -110,9 +110,9 @@ async function EmedGame(event, gameName) {
 client.once('ready', async () => {
     console.log('Scholar Boat Ready!');
 
-    const ChannelRequestCreated = client.channels.cache.get('910189947569451012');
-    const ChannelRequestAccepted = client.channels.cache.get('910189947569451012');
-    const ChannelGameAdd = client.channels.cache.get('910189947569451012');
+    const ChannelRequestCreated = client.channels.cache.get('1030751193166786622');
+    const ChannelRequestAccepted = client.channels.cache.get('1030757802232258590');
+    const ChannelGameAdd = client.channels.cache.get('1030757929663602728');
 
     scholarship.on('RequestCreated', async (requestId) => {
         console.log("RequestCreated", requestId)
@@ -122,7 +122,7 @@ client.once('ready', async () => {
     });
 
     scholarship.on('RequestAccepted', async (requestId) => {
-        console.log('requestId:', requestId)
+        console.log('RequestAccepted:', requestId)
         const requestInfos = await scholarship.fetchRequestId(requestId)
         let Embed = await EmedRequest('Request accepted', requestInfos)
         ChannelRequestAccepted.send({ embeds: [Embed] })
