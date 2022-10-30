@@ -65,7 +65,7 @@ app.get('/', (req, res) => {
     res.redirect(`${uiHost}/success-role`)
 });
 
-app.listen(port, () => console.log(`App listening at http://localhost:${port}`));
+app.listen(process.env.PORT || port, () => console.log(`App listening`));
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
