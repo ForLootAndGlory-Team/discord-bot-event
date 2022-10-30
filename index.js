@@ -19,8 +19,8 @@ const network = {
 };
 const provider = ethers.getDefaultProvider(network);
 
-const scholarship = new ethers.Contract('0xea3A2293D9d9F4c34Ae67C7Cc28c629B75b03deC', abi, provider);
-const royalty = new ethers.Contract('0x0d63b9848F35fA014Aa5a6e3e500cf18e20fbE95', RoyaltyABI, provider)
+const scholarship = new ethers.Contract('0x174611Fa14d1cb4038F221E33Dcc446F39DDEf22', abi, provider);
+const royalty = new ethers.Contract('0x702cEC12BF55C58fb6dE889fac8A875964E5dA5b', RoyaltyABI, provider)
 const client = new Client({
     intents: [
         GatewayIntentBits.DirectMessages,
