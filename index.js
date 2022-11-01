@@ -1,7 +1,9 @@
 require('dotenv').config();
-const abi = require("./abi.json");
+const ScholarshipABI = require("./ScholarshipABI.json");
 const RoyaltyABI = require("./RoyaltyABI.json");
-const { rpcURL, botHost, uiHost } = require('./const')
+const marketplaceERC721ABI = require("./MarketplaceERC721ABI.json");
+const marketplaceERC1155ABI = require("./MarketplaceERC1155ABI.json");
+const { rpcURL, uiHost } = require('./const')
 const ethers = require('ethers');
 const Web3 = require("web3");
 const express = require('express');
@@ -19,8 +21,10 @@ const network = {
 };
 const provider = ethers.getDefaultProvider(network);
 
-const scholarship = new ethers.Contract('0x174611Fa14d1cb4038F221E33Dcc446F39DDEf22', abi, provider);
+const scholarship = new ethers.Contract('0x174611Fa14d1cb4038F221E33Dcc446F39DDEf22', ScholarshipABI, provider)
 const royalty = new ethers.Contract('0x702cEC12BF55C58fb6dE889fac8A875964E5dA5b', RoyaltyABI, provider)
+const marketplaceERC721 = new ethers.Contract('', marketplaceERC721ABI, provider)
+const marketplaceERC1155 = new ethers.Contract('', marketplaceERC1155ABI, provider)
 const client = new Client({
     intents: [
         GatewayIntentBits.DirectMessages,
@@ -107,12 +111,66 @@ async function EmedGame(event, gameName) {
     return Embed;
 }
 
+async function EmedListing(event, listingId, nftContract, tokenId, seller, owner, price) {
+    const Embed = new EmbedBuilder()
+        .setColor(0x0099FF)
+        .setTitle(`${event}`)
+        .setURL('https://forlootandglory.io')
+        .setDescription(`${event}`)
+        .addFields(
+            { name: 'Contract', value: `${nftContract}` },
+        )
+        .addFields(
+            { name: 'tokenId', value: `${tokenId}` },
+        )
+        .addFields(
+            { name: 'Seller', value: `${seller}` },
+        )
+        .addFields(
+            { name: 'Owner', value: `${owner}` },
+        )
+        .addFields(
+            { name: 'Price', value: `${price}` },
+        )
+        .addFields(
+            { name: 'ListingID', value: `${listingId}` },
+        )
+        .setTimestamp()
+        .setFooter({ text: 'For Loot And Glory', iconURL: 'https://forlootandglory.eth.limo/token_logo.png' });
+    return Embed;
+}
+
+async function EmedSold(event, nftContract, tokenId, seller, price) {
+    const Embed = new EmbedBuilder()
+        .setColor(0x0099FF)
+        .setTitle(`${event}`)
+        .setURL('https://forlootandglory.io')
+        .setDescription(`${event}`)
+        .addFields(
+            { name: 'Contract', value: `${nftContract}` },
+        )
+        .addFields(
+            { name: 'tokenId', value: `${tokenId}` },
+        )
+        .addFields(
+            { name: 'Seller', value: `${seller}` },
+        )
+        .addFields(
+            { name: 'Price', value: `${price}` },
+        )
+        .setTimestamp()
+        .setFooter({ text: 'For Loot And Glory', iconURL: 'https://forlootandglory.eth.limo/token_logo.png' });
+    return Embed;
+}
+
 client.once('ready', async () => {
     console.log('Scholar Boat Ready!');
 
     const ChannelRequestCreated = client.channels.cache.get('1030751193166786622');
     const ChannelRequestAccepted = client.channels.cache.get('1030757802232258590');
     const ChannelGameAdd = client.channels.cache.get('1030757929663602728');
+    const ChannelNewListing = client.channels.cache.get('');
+    const ChannelSold = client.channels.cache.get('');
 
     scholarship.on('RequestCreated', async (requestId) => {
         console.log("RequestCreated", requestId)
@@ -137,6 +195,30 @@ client.once('ready', async () => {
         console.log('game', gameName)
         let Embed = await EmedGame('Game Remove', gameName)
         ChannelGameAdd.send({ embeds: [Embed] })
+    });
+    marketplaceERC721.on('ListingCreated', async (listingId, nftContract, tokenId, seller, owner, price) => {
+        console.log('listing', listingId)
+        //const listingInfos = await marketplaceERC721.fetchListing(listingId)
+        let Embed = await EmedListing('New Listing', listingId, nftContract, tokenId, seller, owner, price)
+        ChannelNewListing.send({ embeds: [Embed] })
+    });
+    marketplaceERC1155.on('ListingCreated', async (listingId) => {
+        console.log('listing', listingId)
+        //const listingInfos = await marketplaceERC1155.fetchListing(listingId)
+        let Embed = await EmedListing('New Listing', listingId, nftContract, tokenId, seller, owner, price)
+        ChannelNewListing.send({ embeds: [Embed] })
+    });
+    marketplaceERC721.on('NftSold', async (nftContract, tokenId, seller, price) => {
+        console.log('sold', nftContract, tokenId, seller, price)
+        //const listingInfos = await marketplaceERC721.fetchListing(listingId)
+        let Embed = await EmedSold('NFT Sold', nftContract, tokenId, seller, price)
+        ChannelSold.send({ embeds: [Embed] })
+    });
+    marketplaceERC1155.on('NftSold', async (nftContract, tokenId, seller, price) => {
+        console.log('sold', nftContract, tokenId, seller, price)
+        //const listingInfos = await marketplaceERC721.fetchListing(listingId)
+        let Embed = await EmedSold('NFT Sold', nftContract, tokenId, seller, price)
+        ChannelSold.send({ embeds: [Embed] })
     });
 });
 
