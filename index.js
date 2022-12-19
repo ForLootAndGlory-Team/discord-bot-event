@@ -120,6 +120,7 @@ async function EmbedNewCharacter(event, data) {
 
     let spe = '';
     let path = '';
+    let level = 1;
     if (data.specialisation.toNumber().toString() === '0') {
         spe = 'Pirate'
         path = 'pirate'
@@ -132,6 +133,9 @@ async function EmbedNewCharacter(event, data) {
         spe = 'Smuggler'
         path = 'smuggler'
     }
+    if ((Math.sqrt(data.experience)).toFixed(0) > 0) {
+        level = (Math.sqrt(data.experience)).toFixed(0);
+    }
     const image = new AttachmentBuilder(`./character/${path}/${path}.png`)
     const Embed = new EmbedBuilder()
         .setColor(0x0099FF)
@@ -143,7 +147,7 @@ async function EmbedNewCharacter(event, data) {
             { name: 'Specialisation', value: `${spe}`, inline: true },
             { name: 'Thirst', value: `${data.thirst}`, inline: true },
             { name: 'Experience', value: `${data.experience.toNumber()}`, inline: true },
-            { name: 'Level', value: `${(Math.sqrt(data.experience)).toFixed(0)}` },
+            { name: 'Level', value: `${level}` },
         )
         .addFields(
             { name: 'Boarding', value: `${data.boarding}`, inline: true },
