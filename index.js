@@ -104,7 +104,7 @@ client.on(Events.InteractionCreate, async interaction => {
         try {
 
             let data = await EmbedCharacter(`Character Infos : #${characterId}`, characterId)
-            await interaction.reply({ ephemeral: true, embeds: [data.Embed], files: [data.image] });
+            await interaction.reply({ ephemeral: false, embeds: [data.Embed], files: [data.image] });
         } catch (error) {
             console.log(error)
         }
