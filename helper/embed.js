@@ -1,6 +1,7 @@
 const {
     scholarship,
     character } = require('./web3Const.js')
+const { CharacterAnalytic } = require('./pastEvents.js');
 
 const { EmbedBuilder, AttachmentBuilder } = require('discord.js');
 
@@ -100,6 +101,7 @@ async function EmbedCharacter(event, characterId) {
         path = 'smuggler'
     }
     const totalstats = await character.getCharacterTotalStats(characterId)
+    const winRateCommon = await CharacterAnalytic(characterId)
     const image = new AttachmentBuilder(`./character/${path}/${path}.png`)
     const Embed = new EmbedBuilder()
         .setColor(0x0099FF)
@@ -112,6 +114,7 @@ async function EmbedCharacter(event, characterId) {
             { name: 'Thirst', value: `${characterInfos.thirst}`, inline: true },
             { name: 'Experience', value: `${characterInfos.experience}`, inline: true },
             { name: 'Level', value: `${(Math.sqrt(characterInfos.experience)).toFixed(0)}` },
+            { name: 'WinRate Common', value: winRateCommon },
         )
         .addFields(
             { name: 'Boarding Base', value: `${characterInfos.boarding}`, inline: true },
