@@ -114,7 +114,7 @@ async function EmbedCharacter(event, characterId) {
             { name: 'Thirst', value: `${characterInfos.thirst}`, inline: true },
             { name: 'Experience', value: `${characterInfos.experience}`, inline: true },
             { name: 'Level', value: `${(Math.sqrt(characterInfos.experience)).toFixed(0)}` },
-            { name: 'WinRate Common', value: winRateCommon },
+            { name: 'WinRate Common', value: winRateCommon , inline: true},
         )
         .addFields(
             { name: 'Boarding Base', value: `${characterInfos.boarding}`, inline: true },
