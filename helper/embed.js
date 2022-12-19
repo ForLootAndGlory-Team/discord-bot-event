@@ -1,20 +1,8 @@
+const {
+    scholarship,
+    character } = require('./web3Const.js')
 
-
-const ethers = require('ethers');
-const { rpcURL, uiHost, rpcTestnetURL } = require('../const.js');
 const { EmbedBuilder, AttachmentBuilder } = require('discord.js');
-const abi = require("./abi/scholarABI.json");
-const characterABI = require("./abi/characterABI.json");
-
-
-const networkTestnet = {
-    name: "mumbai",
-    chainId: 80001,
-    _defaultProvider: (providers) => new providers.JsonRpcProvider(rpcTestnetURL)
-};
-
-const scholarship = new ethers.Contract('0x174611Fa14d1cb4038F221E33Dcc446F39DDEf22', abi, provider);
-const character = new ethers.Contract('0x8Ffad43CCeA4d6cA0db5E431A57a4C1d52E41c56', characterABI, providerTestnet);
 
 async function EmedRequest(event, requestInfos) {
 
@@ -144,7 +132,7 @@ async function EmbedCharacter(event, characterId) {
     };
 }
 
-module.export = {
+module.exports = {
     EmedRequest,
     EmedGame,
     EmbedNewCharacter,
