@@ -7,12 +7,14 @@ const {
     EmedRequest,
     EmedGame,
     EmbedNewCharacter,
-    EmbedCharacter
+    EmbedCharacter,
+    EmbedNewGear
 } = require('./helper/embed.js');
 const { ClaimRole } = require('./helper/claimRole.js');
 const {
     scholarship,
-    character } = require('./helper/web3Const.js')
+    character,
+    gear } = require('./helper/web3Const.js')
 const { Client, GatewayIntentBits, EmbedBuilder, Partials, ActionRowBuilder, ButtonBuilder, ButtonStyle, Events } = require('discord.js');
 
 
@@ -44,6 +46,7 @@ client.once('ready', async () => {
     const ChannelRequestAccepted = client.channels.cache.get('1030757802232258590');
     const ChannelGameAdd = client.channels.cache.get('1030757929663602728');
     const ChannelNewCharacter = client.channels.cache.get('1054398502421143565');
+    const ChannelNewGear = client.channels.cache.get('1054781119842758727');
 
     scholarship.on('RequestCreated', async (requestId) => {
         console.log("RequestCreated", requestId)
@@ -74,6 +77,13 @@ client.once('ready', async () => {
         for (let i = 0; i < data.length; i++) {
             let result = await EmbedNewCharacter('New Character', data[i])
             ChannelNewCharacter.send({ embeds: [result.Embed], files: [result.image] })
+        }
+    })
+    gear.on('NewGear', async (data) => {
+        console.log('New Gear', data)
+        for (let i = 0; i < data.length; i++) {
+            let result = await EmbedNewGear('New Gear', data[i])
+            ChannelNewGear.send({ embeds: [result.Embed], files: [result.image] })
         }
     })
 });

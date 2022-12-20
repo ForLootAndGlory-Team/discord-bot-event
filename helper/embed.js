@@ -57,7 +57,7 @@ async function EmbedNewCharacter(event, data) {
         spe = 'Smuggler'
         path = 'smuggler'
     }
-    const image = new AttachmentBuilder(`../character/${path}/${path}.png`)
+    const image = new AttachmentBuilder(`./character/${path}/${path}.png`)
     const Embed = new EmbedBuilder()
         .setColor(0x0099FF)
         .setTitle(`${event}`)
@@ -135,9 +135,69 @@ async function EmbedCharacter(event, characterId) {
     };
 }
 
+async function EmbedNewGear(event, data) {
+
+    let spe = '';
+    let path = '';
+    let rarity = '';
+    if (data.slot.toString() === '0') {
+        spe = 'Mainhand'
+        path = 'mainhand'
+    }
+    if (data.slot.toString() === '1') {
+        spe = 'Chest'
+        path = 'chest'
+    }
+    if (data.slot.toString() === '2') {
+        spe = 'Head'
+        path = 'head'
+    }
+    if (data.slot.toString() === '3') {
+        spe = 'Feets'
+        path = 'feets'
+    }
+    if (data.slot.toString() === '4') {
+        spe = 'Legs'
+        path = 'legs'
+    }
+    if (data.rarity.toString() === '0') {
+        rarity = 'Common'
+    }
+    if (data.rarity.toString() === '1') {
+        rarity = 'Rare'
+    }
+    if (data.rarity.toString() === '2') {
+        rarity = 'Legendary'
+    }
+    const image = new AttachmentBuilder(`./character/pirate/parts/${path}.png`)
+    const Embed = new EmbedBuilder()
+        .setColor(0x0099FF)
+        .setTitle(`${event}`)
+        .setImage(`attachment://${path}.png`)
+        .setURL('https://forlootandglory.io/')
+        .setDescription(`Gear #${data.tokenId.toNumber()}`)
+        .addFields(
+            { name: 'Slot', value: `${spe}`, inline: true },
+            { name: 'Exp Required', value: `${data.experience.toNumber()}`, inline: true },
+            { name: 'Rarity', value: `${rarity}`, inline: true },
+        )
+        .addFields(
+            { name: 'Boarding', value: `${data.boarding}`, inline: true },
+            { name: 'Sailing', value: `${data.sailing}`, inline: true },
+            { name: 'Charisma', value: `${data.charisma}`, inline: true },
+        )
+        .setTimestamp()
+        .setFooter({ text: 'For Loot And Glory', iconURL: 'https://forlootandglory.eth.limo/token_logo.png' });
+    return data = {
+        Embed: Embed,
+        image: image
+    };
+}
+
 module.exports = {
     EmedRequest,
     EmedGame,
     EmbedNewCharacter,
-    EmbedCharacter
+    EmbedCharacter,
+    EmbedNewGear
 }
