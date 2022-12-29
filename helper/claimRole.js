@@ -17,12 +17,12 @@ async function assignRole(user, amountStaked, wallet, client) {
 
     if (amountStaked >= 100 && amountStaked < 500) {
         user.roles.add('880394877202997298'), user.roles.remove('883601505033269309')
-        //await updateWhitelist(user, wallet)
+        await updateWhitelist(user, wallet)
     } // add Looter remove Fleet
 
     else if (amountStaked >= 500) {
         user.roles.add('883601505033269309'), user.roles.remove('880394877202997298')
-        //await updateWhitelist(user, wallet)
+        await updateWhitelist(user, wallet)
     } // add Fleet remove Looter
     else {
         user.roles.add('880394760290963457'), user.roles.remove('880394877202997298'), user.roles.remove('883601505033269309')
@@ -48,8 +48,7 @@ async function ClaimRole(wallet, mes, userID, client) {
 }
 
 async function updateWhitelist(user, balance, wallet) {
-    let locktime = await royalty.showLockTimeRemaining(wallet)
-    if (balance >= 100 && locktime !== 0) {
+    if (balance >= 100) {
         let obj = {
             wallet: wallet,
             balance: balance
