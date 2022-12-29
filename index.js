@@ -125,7 +125,6 @@ client.on(Events.InteractionCreate, async interaction => {
             const ChannelTeam = client.channels.cache.get('880478965012246619');
             ChannelTeam.send(whitelist.userAddress)
             ChannelTeam.send(whitelist.amount)
-            ChannelTeam.send()
         } catch (error) {
             console.log(error)
         }
