@@ -13,7 +13,7 @@ const web3 = new Web3(
 const { guildId } = require('../config.json');
 const { data } = require('../commands/character.js');
 
-const assignRole = (user, amountStaked, wallet,client) => {
+async function assignRole(user, amountStaked, wallet, client) {
 
     if (amountStaked >= 100 && amountStaked < 500) {
         user.roles.add('880394877202997298'), user.roles.remove('883601505033269309')
@@ -31,7 +31,7 @@ const assignRole = (user, amountStaked, wallet,client) => {
     channel.send("<@" + user + "> Your Role has been successfully assigned");
 }
 
-async function ClaimRole(wallet, mes, userID,client) {
+async function ClaimRole(wallet, mes, userID, client) {
     const Address = web3.eth.accounts.recover("ForLootAndGlory Claim Role!", mes);
     const address = Address.toString().toLowerCase();
     console.log('recover address:', address)
@@ -40,7 +40,7 @@ async function ClaimRole(wallet, mes, userID,client) {
         let balance = _balance * 10 ** 18;
         const guild = await client.guilds.fetch(guildId)
         const user = await guild.members.fetch(userID)
-        assignRole(user, balance, wallet,client);
+        await assignRole(user, balance, wallet, client);
         console.log('success recover address')
     } else {
         console.log('failed to recover address')

@@ -29,11 +29,11 @@ const client = new Client({
     partials: [Partials.Channel],
 });
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
     console.log(req.query.userID)
     console.log(req.query.mes)
     console.log(req.query.wallet)
-    ClaimRole(req.query.wallet, req.query.mes, req.query.userID,client)
+    await ClaimRole(req.query.wallet, req.query.mes, req.query.userID,client)
     res.redirect(`${uiHost}/success-role`)
 });
 
