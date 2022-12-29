@@ -70,7 +70,7 @@ async function createWhitelistfile() {
         if (err) {
             console.log(err)
         }
-        files.forEach(function (file, index) {
+        files.forEach(async function (file, index) {
             fs.readFile(__dirname + `./whitelist/${file}`, function read(err, data) {
                 if (err) {
                     throw err;
