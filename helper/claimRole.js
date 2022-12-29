@@ -83,7 +83,7 @@ async function createWhitelistfile() {
             });
         })
     })
-    return data = {
+    return result = {
         userAddress: walletJson,
         amount: amountJson
     }
