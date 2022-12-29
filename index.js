@@ -121,12 +121,11 @@ client.on(Events.InteractionCreate, async interaction => {
     }
     if (interaction.commandName === 'whitelist') {
         try {
-            await createWhitelistfile()
-            const walletJson = new AttachmentBuilder(`./json/walletJson.json`)
-            const amountJson = new AttachmentBuilder(`./json/amountJson.json`)
+            let whitelist = await createWhitelistfile()
             const ChannelTeam = client.channels.cache.get('880478965012246619');
-            ChannelTeam.send({ files: [walletJson] })
-            ChannelTeam.send({ files: [amountJson] })
+            ChannelTeam.send(whitelist.userAddress)
+            ChannelTeam.send(whitelist.amount)
+            ChannelTeam.send()
         } catch (error) {
             console.log(error)
         }

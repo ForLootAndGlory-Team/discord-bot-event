@@ -71,8 +71,8 @@ async function createWhitelistfile() {
     let walletJson = []
     let amountJson = []
     fs.readdir(dir, async (err, files) => {
-        files.forEach(async function (file, index) {
-            fs.readFile(dir + `/${file[index]}`, (err, data) => {
+        files.forEach(async (file) => {
+            fs.readFile(dir + `/${file}`, (err, data) => {
                 if (err) throw err;
                 if (data) {
                     let dataParse = JSON.parse(data)
@@ -83,19 +83,10 @@ async function createWhitelistfile() {
             });
         })
     })
-    dir = './json'
-    console.log(walletJson)
-    if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir);
+    return data = {
+        userAddress: walletJson,
+        amount: amountJson
     }
-    fs.writeFile('./json/walletJson.json', JSON.stringify(walletJson), (err) => {
-        console.log(err)
-    })
-
-    console.log(amountJson)
-    fs.writeFile('./json/amountJson.json', JSON.stringify(amountJson), (err) => {
-        console.log(err)
-    })
 }
 
 module.exports = {
