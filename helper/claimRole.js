@@ -66,12 +66,12 @@ async function createWhitelistfile() {
     let dir = '/whitelist';
     let walletJson = []
     let amountJson = []
-    fs.readdir(__dirname + dir, (err, files) => {
+    fs.readdir(dir, (err, files) => {
         if (err) {
             console.log(err)
         }
         files.forEach(async function (file, index) {
-            fs.readFile(__dirname + `./whitelist/${file}`, function read(err, data) {
+            fs.readFile(`./whitelist/${file}`, function read(err, data) {
                 if (err) {
                     throw err;
                 }
