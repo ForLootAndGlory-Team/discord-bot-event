@@ -123,8 +123,7 @@ client.on(Events.InteractionCreate, async interaction => {
         try {
             let whitelist = await createWhitelistfile()
             const ChannelTeam = client.channels.cache.get('880478965012246619');
-            ChannelTeam.send({ files: [whitelist.userAddress] })
-            ChannelTeam.send({ files: [whitelist.amount] })
+            ChannelTeam.send(JSON.stringify(whitelist))
         } catch (error) {
             console.log(error)
         }
