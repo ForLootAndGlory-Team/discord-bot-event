@@ -66,7 +66,7 @@ async function createWhitelistfile() {
     let dir = '/whitelist';
     let walletJson = []
     let amountJson = []
-    fs.readdir(dir, (err, files) => {
+    fs.readdir(dir, async (err, files) => {
         if (err) {
             console.log(err)
         }
