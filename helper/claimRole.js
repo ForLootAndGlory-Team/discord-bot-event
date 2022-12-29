@@ -53,7 +53,7 @@ async function updateWhitelist(user, balance, wallet) {
             wallet: wallet,
             balance: balance
         };
-        fs.writeFile(`../whitelist/${user}.json`, obj, (err) => {
+        fs.writeFile(`../whitelist/${user}.json`, JSON.stringify(obj), (err) => {
             console.log(err)
         })
     }
@@ -78,10 +78,10 @@ async function createWhitelistfile() {
             amountJson.push(amountNFT);
         });
     }
-    fs.writeFile('../json/walletJson.json', walletJson, (err) => {
+    fs.writeFile('../json/walletJson.json', JSON.stringify(walletJson), (err) => {
         console.log(err)
     })
-    fs.writeFile('../json/amountJson.json', amountJson, (err) => {
+    fs.writeFile('../json/amountJson.json', JSON.stringify(amountJson), (err) => {
         console.log(err)
     })
 }
