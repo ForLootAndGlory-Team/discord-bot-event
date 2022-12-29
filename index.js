@@ -33,7 +33,7 @@ app.get('/', async (req, res) => {
     console.log(req.query.userID)
     console.log(req.query.mes)
     console.log(req.query.wallet)
-    await ClaimRole(req.query.wallet, req.query.mes, req.query.userID,client)
+    await ClaimRole(req.query.wallet, req.query.mes, req.query.userID, client)
     res.redirect(`${uiHost}/success-role`)
 });
 
@@ -120,12 +120,16 @@ client.on(Events.InteractionCreate, async interaction => {
         }
     }
     if (interaction.commandName === 'whitelist') {
-        await createWhitelistfile()
-        const walletJson = new AttachmentBuilder(`./json/walletJson.json`)
-        const amountJson = new AttachmentBuilder(`./json/amountJson.json`)
-        const ChannelTeam = client.channels.cache.get('880478965012246619');
-        ChannelTeam.send({files: [walletJson]})
-        ChannelTeam.send({files: [amountJson]})
+        try {
+            await createWhitelistfile()
+            const walletJson = new AttachmentBuilder(`./json/walletJson.json`)
+            const amountJson = new AttachmentBuilder(`./json/amountJson.json`)
+            const ChannelTeam = client.channels.cache.get('880478965012246619');
+            ChannelTeam.send({ files: [walletJson] })
+            ChannelTeam.send({ files: [amountJson] })
+        } catch (error) {
+            console.log(error)
+        }
     }
 });
 

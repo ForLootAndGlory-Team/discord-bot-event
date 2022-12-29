@@ -54,8 +54,12 @@ async function updateWhitelist(user, balance, wallet) {
             wallet: wallet,
             balance: balance
         };
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir);
+        }
+        let dir = './whitelist';
         console.log('obj:', JSON.stringify(obj))
-        fs.writeFile(`./whitelist/${user}.json`, JSON.stringify(obj), (err) => {
+        fs.writeFile(`${dir}/${user}.json`, JSON.stringify(obj), (err) => {
             console.log(err)
         })
     }
@@ -68,7 +72,6 @@ async function createWhitelistfile() {
     let amountJson = []
     fs.readdir(dir, async (err, files) => {
         files.forEach(async function (file, index) {
-            console.log(file)
             fs.readFile(dir + `/${file}`, (err, data) => {
                 if (err) throw err;
                 if (data) {
@@ -80,10 +83,16 @@ async function createWhitelistfile() {
             });
         })
     })
-
+    dir = './json'
+    console.log(walletJson)
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir);
+    }
     fs.writeFile('./json/walletJson.json', JSON.stringify(walletJson), (err) => {
         console.log(err)
     })
+
+    console.log(amountJson)
     fs.writeFile('./json/amountJson.json', JSON.stringify(amountJson), (err) => {
         console.log(err)
     })
