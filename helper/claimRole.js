@@ -69,7 +69,7 @@ async function createWhitelistfile() {
         len = files.length;
     });
     for (let i = 0; i < files.length; i++) {
-        fs.readFile(`./whitelist/${files[i]}`, function read(err, data) {
+        fs.readFile(__dirname + `./whitelist/${files[i]}`, function read(err, data) {
             if (err) {
                 throw err;
             }
@@ -78,10 +78,10 @@ async function createWhitelistfile() {
             amountJson.push(amountNFT);
         });
     }
-    fs.writeFile('./json/walletJson.json', JSON.stringify(walletJson), (err) => {
+    fs.writeFile(__dirname + './json/walletJson.json', JSON.stringify(walletJson), (err) => {
         console.log(err)
     })
-    fs.writeFile('./json/amountJson.json', JSON.stringify(amountJson), (err) => {
+    fs.writeFile(__dirname + './json/amountJson.json', JSON.stringify(amountJson), (err) => {
         console.log(err)
     })
 }
