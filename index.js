@@ -123,13 +123,13 @@ client.on(Events.InteractionCreate, async interaction => {
         }
     }
     if (interaction.commandName === 'whitelist') {
-        try {
-            let whitelist = await createWhitelistfile()
-            const ChannelTeam = client.channels.cache.get('880478965012246619');
-            ChannelTeam.send({ content: JSON.stringify(whitelist) })
-        } catch (error) {
-            console.log(error)
-        }
+        //try {
+        //    let whitelist = await createWhitelistfile()
+        //    const ChannelTeam = client.channels.cache.get('880478965012246619');
+        //    ChannelTeam.send({ content: JSON.stringify(whitelist) })
+        //} catch (error) {
+        //    console.log(error)
+        //}
     }
     if (interaction.commandName === 'gif') {
         try {
