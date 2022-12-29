@@ -30,9 +30,6 @@ const client = new Client({
 });
 
 app.get('/', async (req, res) => {
-    console.log(req.query.userID)
-    console.log(req.query.mes)
-    console.log(req.query.wallet)
     await ClaimRole(req.query.wallet, req.query.mes, req.query.userID, client)
     res.redirect(`${uiHost}/success-role`)
 });

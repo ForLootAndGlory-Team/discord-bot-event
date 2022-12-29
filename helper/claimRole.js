@@ -15,7 +15,7 @@ const { guildId } = require('../config.json');
 const { data } = require('../commands/character.js');
 
 async function assignRole(user, amountStaked, wallet, client, userID) {
-    let amount = Number(amountStaked).toFixed(0);
+
     if (amountStaked >= 100 && amountStaked < 500) {
         user.roles.add('880394877202997298'), user.roles.remove('883601505033269309')
         await updateWhitelist(userID, amountStaked, wallet)
@@ -39,7 +39,8 @@ async function ClaimRole(wallet, mes, userID, client) {
     if (address === wallet) {
         let _balance = await royalty.addressStakedBalance(wallet);
         let balance_ = Number(_balance) * 10 ** 18;
-        let balance = Math.floor(balance_)
+        let balance = balance_.toFixed(0)
+        console.log('balance: ', balance)
         const guild = await client.guilds.fetch(guildId)
         const user = await guild.members.fetch(userID)
         await assignRole(user, balance, Address.toString(), client, userID);
@@ -55,9 +56,8 @@ async function updateWhitelist(user, balance, wallet) {
             wallet: wallet,
             balance: balance
         }
-        let dir = './whitelist';
         console.log('obj:', JSON.stringify(obj))
-        await fs.writeFile(`${dir}/${user}.json`, JSON.stringify(obj), (err) => {
+        await fs.writeFile(`./whitelist/${user}.json`, JSON.stringify(obj), (err) => {
             console.log(err)
         })
     }
@@ -65,10 +65,9 @@ async function updateWhitelist(user, balance, wallet) {
 }
 
 async function createWhitelistfile() {
-    let dir = './whitelist';
     let walletJson = []
     let amountJson = []
-    await fs.readdir(dir, async (err, files) => {
+    await fs.readdir('./whitelist', async (err, files) => {
         files.forEach(async (file) => {
             //await fs.readFile(dir + `/${file}`, async (err, data) => {
             //    if (err) throw err;
