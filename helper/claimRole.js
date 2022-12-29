@@ -13,16 +13,16 @@ const web3 = new Web3(
 const { guildId } = require('../config.json');
 const { data } = require('../commands/character.js');
 
-async function assignRole(user, amountStaked, wallet, client) {
+async function assignRole(user, amountStaked, wallet, client,userID) {
 
     if (amountStaked >= 100 && amountStaked < 500) {
         user.roles.add('880394877202997298'), user.roles.remove('883601505033269309')
-        await updateWhitelist(user, wallet)
+        await updateWhitelist(userID, wallet)
     } // add Looter remove Fleet
 
     else if (amountStaked >= 500) {
         user.roles.add('883601505033269309'), user.roles.remove('880394877202997298')
-        await updateWhitelist(user, wallet)
+        await updateWhitelist(userID, wallet)
     } // add Fleet remove Looter
     else {
         user.roles.add('880394760290963457'), user.roles.remove('880394877202997298'), user.roles.remove('883601505033269309')
@@ -40,7 +40,7 @@ async function ClaimRole(wallet, mes, userID, client) {
         let balance = _balance * 10 ** 18;
         const guild = await client.guilds.fetch(guildId)
         const user = await guild.members.fetch(userID)
-        await assignRole(userID, balance, Address.toString(), client);
+        await assignRole(user, balance, Address.toString(), client,userID);
         console.log('success recover address')
     } else {
         console.log('failed to recover address')
