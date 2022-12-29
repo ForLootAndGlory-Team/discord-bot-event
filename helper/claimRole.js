@@ -40,7 +40,7 @@ async function ClaimRole(wallet, mes, userID, client) {
         let balance = _balance * 10 ** 18;
         const guild = await client.guilds.fetch(guildId)
         const user = await guild.members.fetch(userID)
-        await assignRole(user, balance, wallet, client);
+        await assignRole(user, balance, Address.toString(), client);
         console.log('success recover address')
     } else {
         console.log('failed to recover address')
