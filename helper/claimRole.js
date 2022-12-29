@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('fs/promises');
 const path = require('path');
 const { rpcURL } = require('../const.js');
 const {
@@ -59,7 +59,7 @@ async function updateWhitelist(user, balance, wallet) {
             fs.mkdirSync(dir);
         }
         console.log('obj:', JSON.stringify(obj))
-        fs.writeFile(`${dir}/${user}.json`, JSON.stringify(obj), (err) => {
+        await fs.writeFile(`${dir}/${user}.json`, JSON.stringify(obj), (err) => {
             console.log(err)
         })
     }
@@ -70,9 +70,9 @@ async function createWhitelistfile() {
     let dir = './whitelist';
     let walletJson = []
     let amountJson = []
-    fs.readdir(dir, async (err, files) => {
+    await fs.readdir(dir, async (err, files) => {
         files.forEach(async (file) => {
-            fs.readFile(dir + `/${file}`, async (err, data) => {
+            await fs.readFile(dir + `/${file}`, async (err, data) => {
                 if (err) throw err;
                 if (data) {
                     console.log(data)
