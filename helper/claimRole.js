@@ -72,6 +72,9 @@ async function createWhitelistfile() {
         }
         files.forEach(async function (file, index) {
             console.log(file)
+            let data = fs.readFile(dir + `/${file}`)
+            let dataParse = JSON.parse(data)
+            console.log(dataParse)
         });
     })
 
