@@ -53,29 +53,11 @@ async function updateWhitelist(user, balance, wallet) {
             wallet: wallet,
             balance: balance
         };
-        let dir = '../whitelist'
-        fs.readdir(dir, (err, files) => {
-            console.log(files.length);
-            len = files.length;
-        });
-        let isExist = false;
-        for (let i = 0; i < files.length; i++) {
-            fs.readFile(`../whitelist/${files[i]}`, function read(err, data) {
-                if (err) {
-                    throw err;
-                }
-            })
-            if (data.wallet === wallet) {
-                isExist = true
-            }
-
-        }
-        if (isExist === false) {
-            fs.writeFile(`../whitelist/${user}.json`, obj, (err) => {
-                console.log(err)
-            })
-        }
+        fs.writeFile(`../whitelist/${user}.json`, obj, (err) => {
+            console.log(err)
+        })
     }
+
 }
 
 async function createWhitelistfile() {
