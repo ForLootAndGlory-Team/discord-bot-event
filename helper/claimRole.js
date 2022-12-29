@@ -1,4 +1,4 @@
-
+const fs = require('fs');
 const { rpcURL } = require('../const.js');
 const {
     royalty
@@ -11,11 +11,20 @@ const web3 = new Web3(
 
 const { guildId } = require('../config.json');
 
-const assignRole = (user, amountStaked) => {
+const assignRole = (user, amountStaked, wallet) => {
 
-    if (amountStaked >= 100 && amountStaked < 500) user.roles.add('880394877202997298'), user.roles.remove('883601505033269309') // add Looter remove Fleet
-    else if (amountStaked >= 500) user.roles.add('883601505033269309'), user.roles.remove('880394877202997298') // add Fleet remove Looter
-    else user.roles.add('880394760290963457'), user.roles.remove('880394877202997298'), user.roles.remove('883601505033269309') // add Fresh remove Looter and Fleet
+    if (amountStaked >= 100 && amountStaked < 500) {
+        user.roles.add('880394877202997298'), user.roles.remove('883601505033269309')
+        updateWhitelist(user, wallet)
+    } // add Looter remove Fleet
+
+    else if (amountStaked >= 500) {
+        user.roles.add('883601505033269309'), user.roles.remove('880394877202997298')
+        updateWhitelist(user, wallet)
+    } // add Fleet remove Looter
+    else {
+        user.roles.add('880394760290963457'), user.roles.remove('880394877202997298'), user.roles.remove('883601505033269309')
+    } // add Fresh remove Looter and Fleet
     let channel = client.channels.cache.get('916655352827744326');
     channel.send("<@" + user + "> Your Role has been successfully assigned");
 }
@@ -29,11 +38,50 @@ async function ClaimRole(wallet, mes, userID) {
         let balance = _balance * 10 ** 18;
         const guild = await client.guilds.fetch(guildId)
         const user = await guild.members.fetch(userID)
-        assignRole(user, balance);
+        assignRole(user, balance, wallet);
         console.log('success recover address')
     } else {
         console.log('failed to recover address')
     }
+}
+
+async function updateWhitelist(user, balance, wallet) {
+    let locktime = await royalty.showLockTimeRemaining(wallet)
+    if (balance >= 100 && locktime !== 0) {
+        let obj = {
+            wallet: wallet,
+            balance: balance
+        };
+        fs.writeFile(`../whitelist/${user}.json`, obj, (err) => {
+            console.log(err)
+        })
+    }
+}
+
+async function createWhitelistfile() {
+    let dir = '../whitelist';
+    let walletJson = []
+    let amountJson = []
+    fs.readdir(dir, (err, files) => {
+        console.log(files.length);
+        len = files.length;
+    });
+    for (let i = 0; i < files.length; i++) {
+       fs.readFile(`../whitelist/${files[i]}`, function read(err, data) {
+            if (err) {
+                throw err;
+            }
+            walletJson.push(data.wallet);
+            let amountNFT = Math.floor(Number(data.balance) / 100);
+            amountJson.push(amountNFT);
+        });
+    }
+    fs.writeFile('../json/walletJson.json', walletJson, (err) => {
+        console.log(err)
+    })
+    fs.writeFile('../json/amountJson.json', amountJson, (err) => {
+        console.log(err)
+    })
 }
 
 module.exports = {

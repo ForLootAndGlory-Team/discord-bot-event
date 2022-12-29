@@ -47,6 +47,7 @@ client.once('ready', async () => {
     const ChannelGameAdd = client.channels.cache.get('1030757929663602728');
     const ChannelNewCharacter = client.channels.cache.get('1054398502421143565');
     const ChannelNewGear = client.channels.cache.get('1054781119842758727');
+    const ChannelTeam = client.channels.cache.get('880478965012246619');
 
     scholarship.on('RequestCreated', async (requestId) => {
         console.log("RequestCreated", requestId)
@@ -118,6 +119,9 @@ client.on(Events.InteractionCreate, async interaction => {
         } catch (error) {
             console.log(error)
         }
+    }
+    if (interaction.commandName === 'whitelist') {
+        
     }
 });
 
