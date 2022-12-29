@@ -59,7 +59,7 @@ async function updateWhitelist(user, balance, wallet) {
         }
         let obj = JSON.stringify(obj_)
         console.log('obj:', obj)
-        await fs.writeFile(`../whitelist/${user}.json`, obj, (err) => {
+        await fs.writeFile(`./whitelist/${user}.json`, obj, (err) => {
             console.log(err)
         })
     }
