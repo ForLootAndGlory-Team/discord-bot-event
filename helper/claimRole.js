@@ -53,10 +53,11 @@ async function ClaimRole(wallet, mes, userID, client) {
 
 async function updateWhitelist(user, balance, wallet) {
     if (balance >= 100) {
-        let obj = {
+        let obj_ = {
             wallet: wallet,
             balance: balance
         }
+        let obj = JSON.stringify(obj_)
         console.log('obj:', obj)
         await fs.writeFile(`../whitelist/${user}.json`, obj, (err) => {
             console.log(err)
