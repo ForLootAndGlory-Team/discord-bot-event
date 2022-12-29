@@ -114,13 +114,31 @@ client.on(Events.InteractionCreate, async interaction => {
             await interaction.reply({ ephemeral: true, embeds: [data.Embed], files: [data.image] });
         } catch (error) {
             console.log(error)
+            let keyword = 'error'
+            let url = `https://tenor.googleapis.com/v2/search?q=${keyword}&key=${process.env.TENOR_API}&limit=10`
+            let response = await fetch(url)
+            let result = await response.json()
+            let index = Math.floor(Math.random() * result.results.length)
+            await interaction.reply(result.results[index].url)
         }
     }
     if (interaction.commandName === 'whitelist') {
         try {
             let whitelist = await createWhitelistfile()
             const ChannelTeam = client.channels.cache.get('880478965012246619');
-            ChannelTeam.send({ content: JSON.stringify(whitelist)})
+            ChannelTeam.send({ content: JSON.stringify(whitelist) })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    if (interaction.commandName === 'gif') {
+        try {
+            let keyword = interaction.options.getString('keyword')
+            let url = `https://tenor.googleapis.com/v2/search?q=${keyword}&key=${process.env.TENOR_API}&limit=10`
+            let response = await fetch(url)
+            let result = await response.json()
+            let index = Math.floor(Math.random() * result.results.length)
+            await interaction.reply(result.results[index].url)
         } catch (error) {
             console.log(error)
         }
