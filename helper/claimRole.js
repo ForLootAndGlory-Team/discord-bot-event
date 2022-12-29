@@ -53,11 +53,11 @@ async function updateWhitelist(user, balance, wallet) {
         let obj = {
             wallet: wallet,
             balance: balance
-        };
+        }
+        let dir = './whitelist';
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir);
         }
-        let dir = './whitelist';
         console.log('obj:', JSON.stringify(obj))
         fs.writeFile(`${dir}/${user}.json`, JSON.stringify(obj), (err) => {
             console.log(err)
