@@ -69,7 +69,7 @@ async function updateWhitelist(user, balance, wallet) {
 async function createWhitelistfile() {
     let walletJson = []
     let amountJson = []
-    await fs.readdir('../whitelist', async (err, files) => {
+    await fs.readdir('./whitelist', async (err, files) => {
         files.forEach(async (file) => {
             //await fs.readFile(dir + `/${file}`, async (err, data) => {
             //    if (err) throw err;
