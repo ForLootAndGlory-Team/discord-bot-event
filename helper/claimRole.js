@@ -53,6 +53,7 @@ async function updateWhitelist(user, balance, wallet) {
             wallet: wallet,
             balance: balance
         };
+        let dir = '../whitelist'
         fs.readdir(dir, (err, files) => {
             console.log(files.length);
             len = files.length;
