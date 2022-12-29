@@ -15,7 +15,7 @@ const { guildId } = require('../config.json');
 const { data } = require('../commands/character.js');
 
 async function assignRole(user, amountStaked, wallet, client, userID) {
-    amountStaked = Number(amountStaked).toFixed(0);
+    let amount = Number(amountStaked).toFixed(0);
     if (amountStaked >= 100 && amountStaked < 500) {
         user.roles.add('880394877202997298'), user.roles.remove('883601505033269309')
         await updateWhitelist(userID, amountStaked, wallet)
@@ -23,7 +23,7 @@ async function assignRole(user, amountStaked, wallet, client, userID) {
 
     else if (amountStaked >= 500) {
         user.roles.add('883601505033269309'), user.roles.remove('880394877202997298')
-        await updateWhitelist(userID, amountStaked, wallet)
+        await updateWhitelist(userID, amount, wallet)
     } // add Fleet remove Looter
     else {
         user.roles.add('880394760290963457'), user.roles.remove('880394877202997298'), user.roles.remove('883601505033269309')
@@ -75,9 +75,11 @@ async function createWhitelistfile() {
                 if (err) {
                     throw err;
                 }
+                console.log(data)
                 walletJson.push(data.wallet);
                 let amountNFT = Math.floor(Number(data.balance) / 100);
-                amountJson.push(amountNFT);
+                amountJson.push(data.balance);
+                console.log(amountNFT)
             });
         })
     });
