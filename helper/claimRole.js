@@ -55,9 +55,6 @@ async function updateWhitelist(user, balance, wallet) {
             balance: balance
         }
         let dir = './whitelist';
-        if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir);
-        }
         console.log('obj:', JSON.stringify(obj))
         await fs.writeFile(`${dir}/${user}.json`, JSON.stringify(obj), (err) => {
             console.log(err)
@@ -75,7 +72,7 @@ async function createWhitelistfile() {
             await fs.readFile(dir + `/${file}`, async (err, data) => {
                 if (err) throw err;
                 if (data) {
-                    console.log(data)
+                    console.log('file:', file, data)
                     walletJson.push(data.wallet)
                     amountJson.push(data.balance)
                 }
