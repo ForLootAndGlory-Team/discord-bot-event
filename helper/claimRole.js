@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const { rpcURL } = require('../const.js');
 const {
     royalty
@@ -62,17 +63,15 @@ async function updateWhitelist(user, balance, wallet) {
 }
 
 async function createWhitelistfile() {
-    let dir = './whitelist';
+    let dir = '/whitelist';
     let walletJson = []
     let amountJson = []
-    let files = []
-    fs.readdir(__dirname + dir, (err, _files) => {
-        files = _files;
-        console.log('files len:', files.length);
-    });
-    if (files.length > 0) {
-        for (let i = 0; i < files.length; i++) {
-            fs.readFile(__dirname + `./whitelist/${files[i]}`, function read(err, data) {
+    fs.readdir(__dirname + dir, (err, files) => {
+        if (err) {
+            console.log(err)
+        }
+        files.forEach(function (file, index) {
+            fs.readFile(__dirname + `./whitelist/${file}`, function read(err, data) {
                 if (err) {
                     throw err;
                 }
@@ -80,8 +79,8 @@ async function createWhitelistfile() {
                 let amountNFT = Math.floor(Number(data.balance) / 100);
                 amountJson.push(amountNFT);
             });
-        }
-    }
+        })
+    });
     fs.writeFile(__dirname + './json/walletJson.json', JSON.stringify(walletJson), (err) => {
         console.log(err)
     })

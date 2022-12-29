@@ -120,7 +120,7 @@ client.on(Events.InteractionCreate, async interaction => {
         }
     }
     if (interaction.commandName === 'whitelist') {
-        //await createWhitelistfile()
+        await createWhitelistfile()
         const walletJson = new AttachmentBuilder(`./json/walletJson.json`)
         const amountJson = new AttachmentBuilder(`./json/amountJson.json`)
         const ChannelTeam = client.channels.cache.get('880478965012246619');
