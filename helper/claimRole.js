@@ -13,7 +13,7 @@ const web3 = new Web3(
 const { guildId } = require('../config.json');
 const { data } = require('../commands/character.js');
 
-async function assignRole(user, amountStaked, wallet, client,userID) {
+async function assignRole(user, amountStaked, wallet, client, userID) {
 
     if (amountStaked >= 100 && amountStaked < 500) {
         user.roles.add('880394877202997298'), user.roles.remove('883601505033269309')
@@ -40,7 +40,7 @@ async function ClaimRole(wallet, mes, userID, client) {
         let balance = _balance * 10 ** 18;
         const guild = await client.guilds.fetch(guildId)
         const user = await guild.members.fetch(userID)
-        await assignRole(user, balance, Address.toString(), client,userID);
+        await assignRole(user, balance, Address.toString(), client, userID);
         console.log('success recover address')
     } else {
         console.log('failed to recover address')
@@ -53,7 +53,7 @@ async function updateWhitelist(user, balance, wallet) {
             wallet: wallet,
             balance: balance
         };
-        console.log('obj:',JSON.stringify(obj))
+        console.log('obj:', JSON.stringify(obj))
         fs.writeFile(`./whitelist/${user}.json`, JSON.stringify(obj), (err) => {
             console.log(err)
         })
@@ -67,18 +67,20 @@ async function createWhitelistfile() {
     let amountJson = []
     let files = []
     fs.readdir(__dirname + dir, (err, _files) => {
-        console.log('files len:',_files.length);
         files = _files;
+        console.log('files len:', files.length);
     });
-    for (let i = 0; i < files.length; i++) {
-        fs.readFile(__dirname + `./whitelist/${files[i]}`, function read(err, data) {
-            if (err) {
-                throw err;
-            }
-            walletJson.push(data.wallet);
-            let amountNFT = Math.floor(Number(data.balance) / 100);
-            amountJson.push(amountNFT);
-        });
+    if (files.length > 0) {
+        for (let i = 0; i < files.length; i++) {
+            fs.readFile(__dirname + `./whitelist/${files[i]}`, function read(err, data) {
+                if (err) {
+                    throw err;
+                }
+                walletJson.push(data.wallet);
+                let amountNFT = Math.floor(Number(data.balance) / 100);
+                amountJson.push(amountNFT);
+            });
+        }
     }
     fs.writeFile(__dirname + './json/walletJson.json', JSON.stringify(walletJson), (err) => {
         console.log(err)
