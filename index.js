@@ -10,12 +10,12 @@ const {
     EmbedCharacter,
     EmbedNewGear
 } = require('./helper/embed.js');
-const { ClaimRole } = require('./helper/claimRole.js');
+const { ClaimRole, createWhitelistfile } = require('./helper/claimRole.js');
 const {
     scholarship,
     character,
     gear } = require('./helper/web3Const.js')
-const { Client, GatewayIntentBits, EmbedBuilder, Partials, ActionRowBuilder, ButtonBuilder, ButtonStyle, Events } = require('discord.js');
+const { Client, GatewayIntentBits, EmbedBuilder, AttachmentBuilder, Partials, ActionRowBuilder, ButtonBuilder, ButtonStyle, Events } = require('discord.js');
 
 
 const client = new Client({
@@ -33,7 +33,7 @@ app.get('/', (req, res) => {
     console.log(req.query.userID)
     console.log(req.query.mes)
     console.log(req.query.wallet)
-    ClaimRole(req.query.wallet, req.query.mes, req.query.userID)
+    ClaimRole(req.query.wallet, req.query.mes, req.query.userID,client)
     res.redirect(`${uiHost}/success-role`)
 });
 
@@ -47,7 +47,6 @@ client.once('ready', async () => {
     const ChannelGameAdd = client.channels.cache.get('1030757929663602728');
     const ChannelNewCharacter = client.channels.cache.get('1054398502421143565');
     const ChannelNewGear = client.channels.cache.get('1054781119842758727');
-    const ChannelTeam = client.channels.cache.get('880478965012246619');
 
     scholarship.on('RequestCreated', async (requestId) => {
         console.log("RequestCreated", requestId)
@@ -121,7 +120,12 @@ client.on(Events.InteractionCreate, async interaction => {
         }
     }
     if (interaction.commandName === 'whitelist') {
-        
+        await createWhitelistfile()
+        const walletJson = new AttachmentBuilder(`./json/walletJson.json`)
+        const amountJson = new AttachmentBuilder(`./json/amountJson.json`)
+        const ChannelTeam = client.channels.cache.get('880478965012246619');
+        ChannelTeam.send({files: [walletJson]})
+        ChannelTeam.send({files: [amountJson]})
     }
 });
 
