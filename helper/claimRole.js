@@ -18,18 +18,19 @@ async function assignRole(user, amountStaked, wallet, client, userID) {
 
     if (amountStaked >= 100 && amountStaked < 500) {
         user.roles.add('880394877202997298'), user.roles.remove('883601505033269309')
-        await updateWhitelist(userID, amountStaked, wallet)
+
     } // add Looter remove Fleet
 
     else if (amountStaked >= 500) {
         user.roles.add('883601505033269309'), user.roles.remove('880394877202997298')
-        await updateWhitelist(userID, amountStaked, wallet)
+
     } // add Fleet remove Looter
     else {
         user.roles.add('880394760290963457'), user.roles.remove('880394877202997298'), user.roles.remove('883601505033269309')
     } // add Fresh remove Looter and Fleet
     let channel = client.channels.cache.get('916655352827744326');
-    channel.send("<@" + user + "> Your Role has been successfully assigned");
+    channel.send("<@" + user + "> Your Role has been successfully assigned")
+    await updateWhitelist(userID, amountStaked, wallet)
 }
 
 async function ClaimRole(wallet, mes, userID, client) {
@@ -56,8 +57,8 @@ async function updateWhitelist(user, balance, wallet) {
             wallet: wallet,
             balance: balance
         }
-        console.log('obj:', JSON.stringify(obj))
-        await fs.writeFile(`./whitelist/${user}.json`, JSON.stringify(obj), (err) => {
+        console.log('obj:', obj)
+        await fs.writeFile(`./whitelist/${user}.json`, obj, (err) => {
             console.log(err)
         })
     }
