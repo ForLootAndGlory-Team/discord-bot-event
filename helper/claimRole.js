@@ -32,7 +32,7 @@ async function assignRole(user, amountStaked, wallet, client) {
 }
 
 async function ClaimRole(wallet, mes, userID, client) {
-    const Address = web3.eth.accounts.recover("ForLootAndGlory Claim Role!", mes);
+    const Address = await web3.eth.accounts.recover("ForLootAndGlory Claim Role!", mes);
     const address = Address.toString().toLowerCase();
     console.log('recover address:', address)
     if (address === wallet) {
