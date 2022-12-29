@@ -71,8 +71,12 @@ async function createWhitelistfile() {
             console.log(file)
             fs.readFile(dir + `/${file}`, (err, data) => {
                 if (err) throw err;
-                let dataParse = JSON.parse(data)
-                console.log(dataParse)
+                if (data) {
+                    let dataParse = JSON.parse(data)
+                    console.log(dataParse)
+                    walletJson.push(dataParse.wallet)
+                    amountJson.push(dataParse.balance)
+                }
             });
         })
     })
