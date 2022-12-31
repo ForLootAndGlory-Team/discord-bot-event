@@ -10,7 +10,7 @@ const {
     EmbedCharacter,
     EmbedNewGear
 } = require('./helper/embed.js');
-const { ClaimRole, createWhitelistfile } = require('./helper/claimRole.js');
+const { ClaimRole } = require('./helper/claimRole.js');
 const {
     scholarship,
     character,

@@ -8,7 +8,6 @@ const web3 = new Web3(
     new Web3.providers.WebsocketProvider(rpcURL)
 );
 
-
 const { guildId } = require('../config.json');
 
 async function assignRole(user, amountStaked, client) {
@@ -41,7 +40,7 @@ async function ClaimRole(wallet, mes, userID, client) {
         console.log('balance: ', balance)
         const guild = await client.guilds.fetch(guildId)
         const user = await guild.members.fetch(userID)
-        await assignRole(user, balance, Address.toString(), client);
+        await assignRole(user, balance, client);
         console.log('success recover address')
     } else {
         console.log('failed to recover address')
