@@ -36,25 +36,31 @@ const updateWhitelist = async (user, address, balance) => {
     if (addresses[user] && Number(balance) >= 100) {
         console.log('Not Allowed!')
     } else {
-        addresses[user] = address
-        addresseAlreadyHere.push(address)
-        let amount = 0;
-        if (balance >= 100 && balance < 500) {
-            amount = 1
+        let totalSpot = 0;
+        for (const [user, amount] of Object.entries(amounts)) {
+            totalSpot += amount;
         }
-        if (balance >= 500 && balance < 2000) {
-            amount = 2
-        }
-        if (balance >= 2000 && balance < 10000) {
-            amount = 3
-        }
-        if (balance >= 10000) {
-            amount = 4
-        }
-        amounts[user] = amount
+        if (totalSpot < 10000) {
+            addresses[user] = address
+            addresseAlreadyHere.push(address)
+            let amount = 0;
+            if (balance >= 100 && balance < 500) {
+                amount = 1
+            }
+            if (balance >= 500 && balance < 2000) {
+                amount = 2
+            }
+            if (balance >= 2000 && balance < 10000) {
+                amount = 3
+            }
+            if (balance >= 10000) {
+                amount = 4
+            }
+            amounts[user] = amount
 
-        let channel = client.channels.cache.get('916655352827744326');
-        channel.send("<@" + user + "> WhiteList for :" + `${amount} NFT`)
+            let channel = client.channels.cache.get('916655352827744326');
+            channel.send("<@" + user + "> WhiteList for :" + `${amount} NFT`)
+        }
     }
 }
 
