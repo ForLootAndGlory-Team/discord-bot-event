@@ -19,6 +19,7 @@ const { Client, GatewayIntentBits, EmbedBuilder, AttachmentBuilder, Partials, Ac
 
 const addresses = {};
 const amounts = {};
+const addresseAlreadyHere = []
 
 const client = new Client({
     intents: [
@@ -31,11 +32,12 @@ const client = new Client({
     partials: [Partials.Channel],
 });
 
-const updateWhitelist = (user, address, balance) => {
+const updateWhitelist = async (user, address, balance) => {
     if (addresses[user] && Number(balance) >= 100) {
         console.log('Not Allowed!')
     } else {
         addresses[user] = address
+        addresseAlreadyHere.push(address)
         let amount = 0;
         if (balance >= 100 && balance < 500) {
             amount = 1
@@ -55,7 +57,15 @@ const updateWhitelist = (user, address, balance) => {
 
 app.get('/', async (req, res) => {
     let balance = await ClaimRole(req.query.wallet, req.query.mes, req.query.userID, client)
-    updateWhitelist(req.query.userID, req.query.wallet, balance)
+    let Allowed = true;
+    for (let i = 0; i < addresseAlreadyHere.length; i++) {
+        if (addresseAlreadyHere[i] === req.query.wallet) {
+            Allowed = false;
+        }
+    }
+    if (Allowed) {
+        await updateWhitelist(req.query.userID, req.query.wallet, balance)
+    }
 
     res.redirect(`${uiHost}/success-role`)
 });
@@ -162,7 +172,6 @@ client.on(Events.InteractionCreate, async interaction => {
     }
     if (interaction.commandName === 'whitelist') {
         let addressesArray = [];
-        let amountsArray = [];
         let totalSpot = 0;
         for (const [user, address] of Object.entries(addresses)) {
             addressesArray.push(address);
