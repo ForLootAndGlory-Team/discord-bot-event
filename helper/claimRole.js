@@ -35,7 +35,9 @@ async function ClaimRole(wallet, mes, userID, client) {
     let balance;
     if (address === wallet) {
         let _balance = await royalty.addressStakedBalance(wallet);
-        let balance_ = Number(_balance) * 10 ** 18;
+        console.log(_balance)
+        let balance_ = Number(_balance) / 10 ** 18;
+        console.log(balance_)
         balance = parseInt(balance_).toFixed(0)
         console.log('balance: ', balance)
         const guild = await client.guilds.fetch(guildId)
