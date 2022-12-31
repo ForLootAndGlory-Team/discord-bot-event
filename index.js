@@ -52,6 +52,9 @@ const updateWhitelist = async (user, address, balance) => {
             amount = 4
         }
         amounts[user] = amount
+
+        let channel = client.channels.cache.get('916655352827744326');
+        channel.send("<@" + user + "> WhiteList for :" + `${amount} NFT`)
     }
 }
 
