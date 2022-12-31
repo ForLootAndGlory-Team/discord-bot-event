@@ -169,7 +169,18 @@ client.on(Events.InteractionCreate, async interaction => {
         for (const [user, amount] of Object.entries(amounts)) {
             amountsArray.push(amount);
         }
-        await interaction.reply(`Les adresses des membres whitelister sont : \n ${JSON.stringify(addressesArray)} \n Les montant autorisé a mint par addresses sont: \n ${JSON.stringify(amountsArray)}`)
+        await interaction.reply(`Les adresses des membres whitelister sont : \n ${(addressesArray)} \n Les montant autorisé a mint par addresses sont: \n ${(amountsArray)}`)
+    }
+    if (interaction.commandName === 'jsonwhitelist') {
+        let addressesArray = [];
+        let amountsArray = [];
+        for (const [user, address] of Object.entries(addresses)) {
+            addressesArray.push(address);
+        }
+        for (const [user, amount] of Object.entries(amounts)) {
+            amountsArray.push(amount);
+        }
+        await interaction.reply(`${JSON.stringify(addressesArray)} \n ${JSON.stringify(amountsArray)}`)
     }
 });
 
