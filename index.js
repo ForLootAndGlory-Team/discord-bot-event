@@ -18,7 +18,7 @@ const {
 const { Client, GatewayIntentBits, EmbedBuilder, AttachmentBuilder, Partials, ActionRowBuilder, ButtonBuilder, ButtonStyle, Events } = require('discord.js');
 
 const addresses = {};
-const amounts = [];
+const amounts = {};
 
 const client = new Client({
     intents: [
@@ -31,17 +31,32 @@ const client = new Client({
     partials: [Partials.Channel],
 });
 
-app.get('/', async (req, res) => {
-    let balance = await ClaimRole(req.query.wallet, req.query.mes, req.query.userID, client)
-    let user = req.query.userID
-    let address = req.query.wallet
+const updateWhitelist = (user, address, balance) => {
     if (addresses[user] && Number(balance) >= 100) {
-        console.log('Already save')
+        console.log('Not Allowed!')
     } else {
         addresses[user] = address
-        let amount = (balance / 100).toFixed(0)
-        amounts.push(amount)
+        let amount = 0;
+        if (balance >= 100 && balance < 500) {
+            amount = 1
+        }
+        if (balance >= 500 && balance < 2000) {
+            amount = 2
+        }
+        if (balance >= 2000 && balance < 10000) {
+            amount = 3
+        }
+        if (balance >= 10000) {
+            amount = 4
+        }
+        amounts[user] = amount
     }
+}
+
+app.get('/', async (req, res) => {
+    let balance = await ClaimRole(req.query.wallet, req.query.mes, req.query.userID, client)
+    updateWhitelist(req.query.userID, req.query.wallet, balance)
+
     res.redirect(`${uiHost}/success-role`)
 });
 
@@ -147,10 +162,14 @@ client.on(Events.InteractionCreate, async interaction => {
     }
     if (interaction.commandName === 'whitelist') {
         let addressesArray = [];
+        let amountsArray = [];
         for (const [user, address] of Object.entries(addresses)) {
             addressesArray.push(address);
         }
-        await interaction.reply(`Les adresses des membres whitelister sont : \n ${addressesArray} \n Les montant autorisé a mint par addresses sont: \n ${amounts}`)
+        for (const [user, amount] of Object.entries(amounts)) {
+            amountsArray.push(amount);
+        }
+        await interaction.reply(`Les adresses des membres whitelister sont : \n ${addressesArray} \n Les montant autorisé a mint par addresses sont: \n ${amountsArray}`)
     }
 });
 
