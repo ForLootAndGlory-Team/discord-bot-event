@@ -33,10 +33,11 @@ async function ClaimRole(wallet, mes, userID, client) {
     const Address = await web3.eth.accounts.recover("ForLootAndGlory Claim Role!", mes);
     const address = Address.toString().toLowerCase();
     console.log('recover address:', address)
+    let balance;
     if (address === wallet) {
         let _balance = await royalty.addressStakedBalance(wallet);
         let balance_ = Number(_balance) * 10 ** 18;
-        let balance = balance_.toFixed(0)
+        balance = balance_.toFixed(0)
         console.log('balance: ', balance)
         const guild = await client.guilds.fetch(guildId)
         const user = await guild.members.fetch(userID)
@@ -45,6 +46,7 @@ async function ClaimRole(wallet, mes, userID, client) {
     } else {
         console.log('failed to recover address')
     }
+    return balance
 }
 
 

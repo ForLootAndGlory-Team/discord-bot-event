@@ -17,6 +17,8 @@ const {
     gear } = require('./helper/web3Const.js')
 const { Client, GatewayIntentBits, EmbedBuilder, AttachmentBuilder, Partials, ActionRowBuilder, ButtonBuilder, ButtonStyle, Events } = require('discord.js');
 
+const addresses = {};
+const amounts = [];
 
 const client = new Client({
     intents: [
@@ -30,7 +32,16 @@ const client = new Client({
 });
 
 app.get('/', async (req, res) => {
-    await ClaimRole(req.query.wallet, req.query.mes, req.query.userID, client)
+    let balance = await ClaimRole(req.query.wallet, req.query.mes, req.query.userID, client)
+    let user = req.query.userID
+    let address = req.query.wallet
+    if (addresses[user] && Number(balance) >= 100) {
+        console.log('Already save')
+    } else {
+        addresses[user] = address
+        let amount = (balance / 100).toFixed(0)
+        amounts.push(amount)
+    }
     res.redirect(`${uiHost}/success-role`)
 });
 
@@ -133,6 +144,14 @@ client.on(Events.InteractionCreate, async interaction => {
         } catch (error) {
             console.log(error)
         }
+    }
+    if (interaction.commandName === 'whitelist') {
+        let addressesArray = [];
+        for (const [user, address] of Object.entries(addresses)) {
+            addressesArray.push(address);
+        }
+        await interaction.reply(`Les adresses des membres sont : ${addressesArray} `)
+        await interaction.reply(`Les adresses des membres sont : ${amounts} `)
     }
 });
 
