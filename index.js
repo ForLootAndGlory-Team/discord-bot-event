@@ -163,13 +163,14 @@ client.on(Events.InteractionCreate, async interaction => {
     if (interaction.commandName === 'whitelist') {
         let addressesArray = [];
         let amountsArray = [];
+        let totalSpot = 0;
         for (const [user, address] of Object.entries(addresses)) {
             addressesArray.push(address);
         }
         for (const [user, amount] of Object.entries(amounts)) {
-            amountsArray.push(amount);
+            totalSpot += amount;
         }
-        await interaction.reply(`Les adresses des membres whitelister sont : \n ${(addressesArray)} \n Les montant autorisé a mint par addresses sont: \n ${(amountsArray)}`)
+        await interaction.reply(`Nombre de Spot reservé : \n ${(totalSpot)}/10000 \n Les adresses des membres whitelister sont : \n ${(addressesArray)}`)
     }
     if (interaction.commandName === 'jsonwhitelist') {
         let addressesArray = [];
