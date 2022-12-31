@@ -150,7 +150,7 @@ client.on(Events.InteractionCreate, async interaction => {
         for (const [user, address] of Object.entries(addresses)) {
             addressesArray.push(address);
         }
-        await interaction.reply(`Les adresses des membres whitelister sont : \n ${addressesArray} Les montant autorisé a mint par addresses sont: \n ${amounts}`)
+        await interaction.reply(`Les adresses des membres whitelister sont : \n ${addressesArray} \n Les montant autorisé a mint par addresses sont: \n ${amounts}`)
     }
 });
 
