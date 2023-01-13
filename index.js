@@ -206,7 +206,7 @@ client.on(Events.InteractionCreate, async interaction => {
         let address = []
         address.push(interaction.options.getString('address'))
         await addWhitelist(address,amount);
-        await interaction.reply(`Address ${address[0]} got ${10} testnet spot!`);
+        await interaction.deferReply(`Address ${address[0]} got ${10} testnet spot!`);
     }
 });
 
