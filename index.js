@@ -11,6 +11,7 @@ const {
     EmbedNewGear
 } = require('./helper/embed.js');
 const { ClaimRole } = require('./helper/claimRole.js');
+const { addWhitelist } = require('./helper/send.js');
 const {
     scholarship,
     character,
@@ -132,7 +133,6 @@ client.once('ready', async () => {
 
 client.on(Events.InteractionCreate, async interaction => {
     if (!interaction.isChatInputCommand()) return;
-
     if (interaction.commandName === 'role') {
         const row = new ActionRowBuilder()
             .addComponents(
@@ -200,6 +200,13 @@ client.on(Events.InteractionCreate, async interaction => {
             amountsArray.push(amount);
         }
         await interaction.reply(`${JSON.stringify(addressesArray)} \n ${JSON.stringify(amountsArray)}`)
+    }
+    if (interaction.commandName === 'addwhitelist') {
+        let amount = ['10']
+        let address = []
+        address.push(interaction.options.getString('address'))
+        await addWhitelist(address,amount);
+        await interaction.reply(`Address ${address[0]} got ${10} testnet spot!`);
     }
 });
 

@@ -15,6 +15,8 @@ const network = {
 
 const provider = ethers.getDefaultProvider(network);
 const providerTestnet = ethers.getDefaultProvider(networkTestnet);
+const signer = new ethers.Wallet(process.env.PRIVATE_KEY, providerTestnet);
+
 const scholarABI = require("../abi/scholarABI.json");
 const characterABI = require("../abi/characterABI.json");
 const RoyaltyABI = require("../abi/RoyaltyABI.json");
