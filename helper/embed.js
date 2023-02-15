@@ -140,7 +140,7 @@ async function EmbedNewGear(event, data) {
     let spe = '';
     let path = '';
     let rarity = '';
-    if (data.slot.toString() === '0') {
+    if (data.slot.toString() === '2') {
         spe = 'Mainhand'
         path = 'mainhand'
     }
@@ -148,17 +148,17 @@ async function EmbedNewGear(event, data) {
         spe = 'Chest'
         path = 'chest'
     }
-    if (data.slot.toString() === '2') {
+    if (data.slot.toString() === '0') {
         spe = 'Head'
         path = 'head'
     }
-    if (data.slot.toString() === '3') {
-        spe = 'Feets'
-        path = 'feets'
-    }
     if (data.slot.toString() === '4') {
+        spe = 'Feets'
+        path = 'feet'
+    }
+    if (data.slot.toString() === '5') {
         spe = 'Legs'
-        path = 'legs'
+        path = 'leg'
     }
     if (data.rarity.toString() === '0') {
         rarity = 'Common'
