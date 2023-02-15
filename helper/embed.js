@@ -156,7 +156,7 @@ async function EmbedNewGear(event, data) {
         spe = 'Feets'
         path = 'feet'
     }
-    if (data.slot.toString() === '5') {
+    if (data.slot.toString() === '3') {
         spe = 'Legs'
         path = 'leg'
     }
