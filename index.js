@@ -66,8 +66,8 @@ const updateWhitelist = async (user, address, balance) => {
 }
 
 app.get('/', async (req, res) => {
-    let balance = await ClaimRole(req.query.wallet, req.query.mes, req.query.userID, client)
-    let Allowed = true;
+    /*let balance =*/ await ClaimRole(req.query.wallet, req.query.mes, req.query.userID, client)
+    /*let Allowed = true;
     for (let i = 0; i < addresseAlreadyHere.length; i++) {
         if (addresseAlreadyHere[i] === req.query.wallet) {
             Allowed = false;
@@ -75,7 +75,7 @@ app.get('/', async (req, res) => {
     }
     if (Allowed) {
         await updateWhitelist(req.query.userID, req.query.wallet, balance)
-    }
+    }*/
 
     res.redirect(`${uiHost}/success-role`)
 });
