@@ -123,7 +123,7 @@ client.once('ready', async () => {
         }
     })
     gear.on('NewGear', async (data) => {
-        console.log('New Gear', data)
+        console.log('New Gear', data.length)
         for (let i = 0; i < data.length; i++) {
             let result = await EmbedNewGear('New Gear', data[i])
             ChannelNewGear.send({ embeds: [result.Embed], files: [result.image] })
