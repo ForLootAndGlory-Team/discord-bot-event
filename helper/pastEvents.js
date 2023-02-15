@@ -4,7 +4,7 @@ const {
 } = require('./web3Const.js');
 
 async function CharacterAnalytic(characterId) {
-    let interfaceABI = ['event HuntResult((uint32,uint32,uint32,uint32,uint64,uint64,bool,address,address,address,uint256,uint256))'];
+    let interfaceABI = ['event HuntResult((uint32,uint32,uint32,uint32,uint32,uint32,uint64,bool,address,address,address,uint256))'];
     let iface = new ethers.utils.Interface(interfaceABI);
     let eventFilter = huntCommon.filters.HuntResult()
     let events = await huntCommon.queryFilter(eventFilter, 29498797, 'latest')
@@ -13,7 +13,7 @@ async function CharacterAnalytic(characterId) {
     let TotalHUNT = 0;
     let userAddress;
     for (let i = 0; i < parsedEvent.length; i++) {
-        const [AmountHunt, percentToRenter, totalExp, totalWin, totalMap, totalStats, isRenting, user, renter, owner, tokenId, bonusFLAG] = parsedEvent[i].args[0];
+        const [AmountHunt, percentToRenter, totalExp, totalWin, totalMap, difficulty, totalStats, isRenting, user, renter, owner, tokenId] = parsedEvent[i].args[0];
         if (Number(tokenId) === characterId) {
             TotalHUNT += Number(AmountHunt)
             TotalWIN += Number(totalWin)

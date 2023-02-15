@@ -15,7 +15,6 @@ const network = {
 
 const provider = ethers.getDefaultProvider(network);
 const providerTestnet = ethers.getDefaultProvider(networkTestnet);
-const signer = new ethers.Wallet(process.env.PRIVATE_KEY, providerTestnet);
 
 const scholarABI = require("../abi/scholarABI.json");
 const characterABI = require("../abi/characterABI.json");
@@ -24,10 +23,10 @@ const HuntABI = require("../abi/HuntABI.json");
 const gearABI = require("../abi/gearABI.json");
 
 const scholarship = new ethers.Contract('0x174611Fa14d1cb4038F221E33Dcc446F39DDEf22', scholarABI, provider);
-const character = new ethers.Contract('0x8Ffad43CCeA4d6cA0db5E431A57a4C1d52E41c56', characterABI, providerTestnet);
+const character = new ethers.Contract('0xc1e6C2b308369Dd79384D97E22adc9d8933d4BB8', characterABI, providerTestnet);
 const royalty = new ethers.Contract('0x702cEC12BF55C58fb6dE889fac8A875964E5dA5b', RoyaltyABI, provider);
-const huntCommon = new ethers.Contract('0x7eFa33679c27d0C27F43E908539F816eb4DB76Ab', HuntABI, providerTestnet);
-const gear = new ethers.Contract('0x19eF70184CaD4228bf191F3c08C2236b6cA30421', gearABI, providerTestnet);
+const huntCommon = new ethers.Contract('0xD2a8B1a52d1428315e6959111b11bE91Aa6687c2', HuntABI, providerTestnet);
+const gear = new ethers.Contract('0x480d5bdB8EbD40a3e916868ccF7bc7Fddf4a595a', gearABI, providerTestnet);
 
 module.exports = {
     networkTestnet,

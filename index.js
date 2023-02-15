@@ -157,14 +157,7 @@ client.on(Events.InteractionCreate, async interaction => {
 
             let data = await EmbedCharacter(`Character Infos : #${characterId}`, characterId)
             await interaction.reply({ ephemeral: true, embeds: [data.Embed], files: [data.image] });
-        } catch (error) {
-            console.log(error)
-            let keyword = 'error'
-            let url = `https://tenor.googleapis.com/v2/search?q=${keyword}&key=${process.env.TENOR_API}&limit=10`
-            let response = await fetch(url)
-            let result = await response.json()
-            let index = Math.floor(Math.random() * result.results.length)
-            await interaction.reply(result.results[index].url)
+        } catch (e) {
         }
     }
     if (interaction.commandName === 'gif') {
@@ -206,7 +199,7 @@ client.on(Events.InteractionCreate, async interaction => {
         let address = []
         address.push(interaction.options.getString('address'))
         await interaction.reply(`Address ${address[0]} got ${10} testnet spot!`);
-        await addWhitelist(address,amount);
+        await addWhitelist(address, amount);
     }
 });
 
