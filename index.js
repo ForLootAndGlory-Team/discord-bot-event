@@ -116,7 +116,7 @@ client.once('ready', async () => {
         ChannelGameAdd.send({ embeds: [Embed] })
     });
     character.on('NewCharacter', async (data) => {
-        console.log('NewCharacter', data)
+        console.log('NewCharacter', data.length)
         for (let i = 0; i < data.length; i++) {
             let result = await EmbedNewCharacter('New Character', data[i])
             ChannelNewCharacter.send({ embeds: [result.Embed], files: [result.image] })
