@@ -95,6 +95,15 @@ async function assignRole(user, amountStaked, client) {
     channel.send("<@" + user + "> Your Role " + userRole + " has been successfully assigned")
 }
 
+async function parseIntBalance(amount) {
+    console.log(_balance)
+        let balance_ = Number(_balance) / 10 ** 18;
+        console.log(balance_)
+        let balance = parseInt(balance_).toFixed(0)
+        console.log('balance: ', balance)
+    return balance;
+}
+
 async function ClaimRole(wallet, mes, userID, client) {
     const Address = await web3.eth.accounts.recover("ForLootAndGlory Claim Role!", mes);
     const address = Address.toString().toLowerCase();
@@ -102,11 +111,7 @@ async function ClaimRole(wallet, mes, userID, client) {
     let balance;
     if (address === wallet) {
         let _balance = await royalty.addressStakedBalance(wallet);
-        console.log(_balance)
-        let balance_ = Number(_balance) / 10 ** 18;
-        console.log(balance_)
-        balance = parseInt(balance_).toFixed(0)
-        console.log('balance: ', balance)
+        await parseIntBalance(_balance)
         const guild = await client.guilds.fetch(guildId)
         const user = await guild.members.fetch(userID)
         await assignRole(user, balance, client);
