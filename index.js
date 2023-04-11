@@ -46,12 +46,12 @@ client.once('ready', async () => {
     const ChannelGameAdd = client.channels.cache.get('1030757929663602728');
     const ChannelNewCharacter = client.channels.cache.get('1054398502421143565');
     const ChannelNewGear = client.channels.cache.get('1054781119842758727');
-    const ChannelCaptainQuest = client.channels.cache.get('1093551575240298599');
+    //const ChannelCaptainQuest = client.channels.cache.get('1093551575240298599');
 
-    captainQuest.on('ClaimCaptain', async (data) => {
+    /*captainQuest.on('ClaimCaptain', async (data) => {
         console.log('ClaimCaptain', data)
         ChannelCaptainQuest.send(`Captain Quest Completed: user: ${data.user} \n characterId: ${data.tokenId}`)
-    })
+    })*/
 
     scholarship.on('RequestCreated', async (requestId) => {
         console.log("RequestCreated", requestId)
