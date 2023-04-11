@@ -16,7 +16,7 @@ const {
     scholarship,
     character,
     gear,
-    captainQuest
+   // captainQuest
 } = require('./helper/web3Const.js')
 const { Client, GatewayIntentBits, EmbedBuilder, Partials, ActionRowBuilder, ButtonBuilder, ButtonStyle, Events } = require('discord.js');
 
