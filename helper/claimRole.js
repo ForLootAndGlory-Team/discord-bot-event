@@ -33,62 +33,62 @@ async function assignRole(user, amountStaked, client) {
     let userRole = ''
     // Amiral
     if (amountStaked >= amiralRole) {
-        user.roles.add(landLubberRole),
-            user.roles.add(looterRole),
-            user.roles.add(smugglerRole),
-            user.roles.add(corsairRole),
-            user.roles.add(sailingMasterRole),
-            user.roles.add(amiralRole)
+       await user.roles.add(landLubberRole),
+       await    user.roles.add(looterRole),
+       await    user.roles.add(smugglerRole),
+       await    user.roles.add(corsairRole),
+       await   user.roles.add(sailingMasterRole),
+       await   user.roles.add(amiralRole),
         userRole = 'Amiral'
     }
     // Sailing Master
     else if (amountStaked >= sailingMasterAmount && amountStaked < amiralAmount) {
-        user.roles.add(landLubberRole),
-            user.roles.add(looterRole),
-            user.roles.add(smugglerRole),
-            user.roles.add(corsairRole),
-            user.roles.add(sailingMasterRole),
-            user.roles.remove(amiralRole)
+        await user.roles.add(landLubberRole),
+        await   user.roles.add(looterRole),
+        await   user.roles.add(smugglerRole),
+        await   user.roles.add(corsairRole),
+        await   user.roles.add(sailingMasterRole),
+        await   user.roles.remove(amiralRole),
         userRole = 'Sailing Master'
     }
     // Corsair
     else if (amountStaked >= corsairAmount && amountStaked < sailingMasterAmount) {
-        user.roles.add(landLubberRole),
-            user.roles.add(looterRole),
-            user.roles.add(smugglerRole),
-            user.roles.add(corsairRole),
-            user.roles.remove(amiralRole),
-            user.roles.remove(sailingMasterRole)
-        userRole = 'Corsair'
+        await user.roles.add(landLubberRole),
+        await   user.roles.add(looterRole),
+        await   user.roles.add(smugglerRole),
+        await   user.roles.add(corsairRole),
+        await    user.roles.remove(amiralRole),
+        await   user.roles.remove(sailingMasterRole),
+         userRole = 'Corsair'
     }
     // Smuggler
     else if (amountStaked >= smugglerAmount && amountStaked < corsairAmount) {
-        user.roles.add(landLubberRole),
-            user.roles.add(looterRole),
-            user.roles.add(smugglerRole),
-            user.roles.remove(corsairRole),
-            user.roles.remove(amiralRole),
-            user.roles.remove(sailingMasterRole)
-        userRole = 'Smuggler'
+        await user.roles.add(landLubberRole),
+        await    user.roles.add(looterRole),
+        await   user.roles.add(smugglerRole),
+        await  user.roles.remove(corsairRole),
+        await   user.roles.remove(amiralRole),
+        await  user.roles.remove(sailingMasterRole),
+         userRole = 'Smuggler'
     }
     // Looter
     else if (amountStaked >= looterAmount && amountStaked < smugglerAmount) {
-        user.roles.add(landLubberRole),
-            user.roles.add(looterRole),
-            user.roles.remove(smugglerRole),
-            user.roles.remove(corsairRole),
-            user.roles.remove(amiralRole),
-            user.roles.remove(sailingMasterRole)
+        await user.roles.add(landLubberRole),
+        await    user.roles.add(looterRole),
+        await   user.roles.remove(smugglerRole),
+        await   user.roles.remove(corsairRole),
+        await   user.roles.remove(amiralRole),
+        await   user.roles.remove(sailingMasterRole),
         userRole = 'Looter'
     }
     // LandLubber
     else {
-        user.roles.add(landLubberRole),
-            user.roles.remove(looterRole),
-            user.roles.remove(smugglerRole),
-            user.roles.remove(corsairRole),
-            user.roles.remove(amiralRole),
-            user.roles.remove(sailingMasterRole)
+        await user.roles.add(landLubberRole),
+        await    user.roles.remove(looterRole),
+        await   user.roles.remove(smugglerRole),
+        await   user.roles.remove(corsairRole),
+        await   user.roles.remove(amiralRole),
+        await   user.roles.remove(sailingMasterRole),
         userRole = 'Landlubber'
     }
     let channel = client.channels.cache.get('916655352827744326');
