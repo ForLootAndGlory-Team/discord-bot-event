@@ -82,7 +82,7 @@ async function assignRole(user, amountStaked, client) {
         userRole = 'Looter'
     }
     // LandLubber
-    else {
+    else if (amountStaked < 100) {
         await user.roles.add(landLubberRole),
         await    user.roles.remove(looterRole),
         await   user.roles.remove(smugglerRole),
