@@ -32,7 +32,7 @@ const { guildId } = require('../config.json');
 async function assignRole(user, amountStaked, client) {
     let userRole = ''
     // Amiral
-    if (amountStaked >= amiralRole) {
+    if (amountStaked >= amiralAmount) {
        await user.roles.add(landLubberRole)
        await    user.roles.add(looterRole)
        await    user.roles.add(smugglerRole)
