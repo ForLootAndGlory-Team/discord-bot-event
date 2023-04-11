@@ -21,7 +21,7 @@ const characterABI = require("../abi/characterABI.json");
 const RoyaltyABI = require("../abi/RoyaltyABI.json");
 const HuntABI = require("../abi/HuntABI.json");
 const gearABI = require("../abi/gearABI.json");
-const captainQuestABI = require('../abi/captainQuestABI.json');
+//const captainQuestABI = require('../abi/captainQuestABI.json');
 
 const scholarship = new ethers.Contract('0x174611Fa14d1cb4038F221E33Dcc446F39DDEf22', scholarABI, provider);
 const character = new ethers.Contract('0xc1e6C2b308369Dd79384D97E22adc9d8933d4BB8', characterABI, providerTestnet);
