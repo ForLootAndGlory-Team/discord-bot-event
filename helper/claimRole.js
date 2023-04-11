@@ -8,24 +8,73 @@ const web3 = new Web3(
     new Web3.providers.WebsocketProvider(rpcURL)
 );
 
+// Role Id
+const landLubberRole = '1094612796030865428'
+//const monkeyPounder = '1094971972275937351'
+const looterRole = '1094613093558005820'
+const smugglerRole = '1094613477127114823'
+const corsairRole = '1094613575219290203'
+const sailingMasterRole = '1094614732125777980'
+const amiralRole = '1094614860526002236'
+
+// Role Stake Amount
+const landLubberAmount = 0;
+//const monkeyPounder = '50' ou 1 Collectible
+const looterAmount = 100;
+const smugglerAmount = 500;
+const corsairAmount = 1000;
+const sailingMasterAmount = 5000;
+const amiralAmount = 10000;
+
+
 const { guildId } = require('../config.json');
 
 async function assignRole(user, amountStaked, client) {
-
-    if (amountStaked >= 100 && amountStaked < 500) {
-        user.roles.add('880394877202997298'), user.roles.remove('883601505033269309')
-
-    } // add Looter remove Fleet
-
-    else if (amountStaked >= 500) {
-        user.roles.add('883601505033269309'), user.roles.remove('880394877202997298')
-
-    } // add Fleet remove Looter
-    else {
-        user.roles.add('880394760290963457'), user.roles.remove('880394877202997298'), user.roles.remove('883601505033269309')
-    } // add Fresh remove Looter and Fleet
+    let userRole = ''
+    // Amiral
+    if (amountStaked >= amiralRole) {
+        user.roles.add(amiralRole)
+        userRole = 'Amiral'
+    }
+    // Sailing Master
+    if (amountStaked >= sailingMasterAmount && amountStaked < amiralAmount) {
+        user.roles.add(sailingMasterRole), user.roles.remove(amiralRole)
+        userRole = 'Sailing Master'
+    }
+    // Corsair
+    if (amountStaked >= corsairAmount && amountStaked < sailingMasterAmount) {
+        user.roles.add(corsairRole), user.roles.remove(amiralRole), user.roles.remove(sailingMasterRole)
+        userRole = 'Corsair'
+    }
+    // Smuggler
+    if (amountStaked >= smugglerAmount && amountStaked < corsairAmount) {
+        user.roles.add(smugglerRole),
+            user.roles.remove(corsairRole),
+            user.roles.remove(amiralRole),
+            user.roles.remove(sailingMasterRole)
+        userRole = 'Smuggler'
+    }
+    // Looter
+    if (amountStaked >= looterAmount && amountStaked < smugglerAmount) {
+        user.roles.add(looterRole),
+            user.roles.remove(smugglerRole),
+            user.roles.remove(corsairRole),
+            user.roles.remove(amiralRole),
+            user.roles.remove(sailingMasterRole)
+        userRole = 'Looter'
+    }
+    // LandLubber
+    if (amountStaked < looterAmount) {
+        user.roles.add(landLubberRole),
+            user.roles.remove(looterRole),
+            user.roles.remove(smugglerRole),
+            user.roles.remove(corsairRole),
+            user.roles.remove(amiralRole),
+            user.roles.remove(sailingMasterRole)
+        userRole = 'Landlubber'
+    }
     let channel = client.channels.cache.get('916655352827744326');
-    channel.send("<@" + user + "> Your Role has been successfully assigned")
+    channel.send("<@" + user + "> Your Role " + userRole + " has been successfully assigned")
 }
 
 async function ClaimRole(wallet, mes, userID, client) {

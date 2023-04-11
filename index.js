@@ -15,12 +15,10 @@ const { addWhitelist } = require('./helper/send.js');
 const {
     scholarship,
     character,
-    gear } = require('./helper/web3Const.js')
-const { Client, GatewayIntentBits, EmbedBuilder, AttachmentBuilder, Partials, ActionRowBuilder, ButtonBuilder, ButtonStyle, Events } = require('discord.js');
-
-const addresses = {};
-const amounts = {};
-const addresseAlreadyHere = []
+    gear,
+    captainQuest
+} = require('./helper/web3Const.js')
+const { Client, GatewayIntentBits, EmbedBuilder, Partials, ActionRowBuilder, ButtonBuilder, ButtonStyle, Events } = require('discord.js');
 
 const client = new Client({
     intents: [
@@ -33,50 +31,8 @@ const client = new Client({
     partials: [Partials.Channel],
 });
 
-const updateWhitelist = async (user, address, balance) => {
-    if (addresses[user] && Number(balance) >= 100) {
-        console.log('Not Allowed!')
-    } else {
-        let totalSpot = 0;
-        for (const [user, amount] of Object.entries(amounts)) {
-            totalSpot += amount;
-        }
-        if (totalSpot < 10000) {
-            addresses[user] = address
-            addresseAlreadyHere.push(address)
-            let amount = 0;
-            if (balance >= 100 && balance < 500) {
-                amount = 1
-            }
-            if (balance >= 500 && balance < 2000) {
-                amount = 2
-            }
-            if (balance >= 2000 && balance < 10000) {
-                amount = 3
-            }
-            if (balance >= 10000) {
-                amount = 4
-            }
-            amounts[user] = amount
-
-            let channel = client.channels.cache.get('916655352827744326');
-            channel.send("<@" + user + "> WhiteList for :" + `${amount} NFT`)
-        }
-    }
-}
-
 app.get('/', async (req, res) => {
-    /*let balance =*/ await ClaimRole(req.query.wallet, req.query.mes, req.query.userID, client)
-    /*let Allowed = true;
-    for (let i = 0; i < addresseAlreadyHere.length; i++) {
-        if (addresseAlreadyHere[i] === req.query.wallet) {
-            Allowed = false;
-        }
-    }
-    if (Allowed) {
-        await updateWhitelist(req.query.userID, req.query.wallet, balance)
-    }*/
-
+    await ClaimRole(req.query.wallet, req.query.mes, req.query.userID, client)
     res.redirect(`${uiHost}/success-role`)
 });
 
@@ -90,6 +46,12 @@ client.once('ready', async () => {
     const ChannelGameAdd = client.channels.cache.get('1030757929663602728');
     const ChannelNewCharacter = client.channels.cache.get('1054398502421143565');
     const ChannelNewGear = client.channels.cache.get('1054781119842758727');
+    const ChannelCaptainQuest = client.channels.cache.get('1093551575240298599');
+
+    captainQuest.on('ClaimCaptain', async (data) => {
+        console.log('ClaimCaptain', data)
+        ChannelCaptainQuest.send(`Captain Quest Completed: user: ${data.user} \n characterId: ${data.tokenId}`)
+    })
 
     scholarship.on('RequestCreated', async (requestId) => {
         console.log("RequestCreated", requestId)
