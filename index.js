@@ -15,7 +15,7 @@ const { addWhitelist } = require('./helper/send.js');
 const {
     scholarship,
     character,
-    gear,
+    gear
    // captainQuest
 } = require('./helper/web3Const.js')
 const { Client, GatewayIntentBits, EmbedBuilder, Partials, ActionRowBuilder, ButtonBuilder, ButtonStyle, Events } = require('discord.js');
