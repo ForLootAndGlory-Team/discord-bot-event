@@ -42,7 +42,7 @@ async function assignRole(user, amountStaked, client) {
         userRole = 'Amiral'
     }
     // Sailing Master
-    if (amountStaked >= sailingMasterAmount && amountStaked < amiralAmount) {
+    else if (amountStaked >= sailingMasterAmount && amountStaked < amiralAmount) {
         user.roles.add(landLubberRole),
             user.roles.add(looterRole),
             user.roles.add(smugglerRole),
@@ -52,7 +52,7 @@ async function assignRole(user, amountStaked, client) {
         userRole = 'Sailing Master'
     }
     // Corsair
-    if (amountStaked >= corsairAmount && amountStaked < sailingMasterAmount) {
+    else if (amountStaked >= corsairAmount && amountStaked < sailingMasterAmount) {
         user.roles.add(landLubberRole),
             user.roles.add(looterRole),
             user.roles.add(smugglerRole),
@@ -62,7 +62,7 @@ async function assignRole(user, amountStaked, client) {
         userRole = 'Corsair'
     }
     // Smuggler
-    if (amountStaked >= smugglerAmount && amountStaked < corsairAmount) {
+    else if (amountStaked >= smugglerAmount && amountStaked < corsairAmount) {
         user.roles.add(landLubberRole),
             user.roles.add(looterRole),
             user.roles.add(smugglerRole),
@@ -72,7 +72,7 @@ async function assignRole(user, amountStaked, client) {
         userRole = 'Smuggler'
     }
     // Looter
-    if (amountStaked >= looterAmount && amountStaked < smugglerAmount) {
+    else if (amountStaked >= looterAmount && amountStaked < smugglerAmount) {
         user.roles.add(landLubberRole),
             user.roles.add(looterRole),
             user.roles.remove(smugglerRole),
@@ -82,7 +82,7 @@ async function assignRole(user, amountStaked, client) {
         userRole = 'Looter'
     }
     // LandLubber
-    if (amountStaked < looterAmount) {
+    else {
         user.roles.add(landLubberRole),
             user.roles.remove(looterRole),
             user.roles.remove(smugglerRole),
