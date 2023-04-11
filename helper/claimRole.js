@@ -86,8 +86,8 @@ async function assignRole(user, amountStaked, client) {
 }
 
 async function parseIntBalance(amount) {
-    console.log(_balance)
-    let balance_ = Number(_balance) / 10 ** 18;
+    console.log(amount)
+    let balance_ = Number(amount) / 10 ** 18;
     console.log(balance_)
     let balance = parseInt(balance_).toFixed(0)
     console.log('balance: ', balance)
