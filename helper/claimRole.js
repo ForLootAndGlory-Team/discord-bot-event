@@ -111,7 +111,7 @@ async function ClaimRole(wallet, mes, userID, client) {
     let balance;
     if (address === wallet) {
         let _balance = await royalty.addressStakedBalance(wallet);
-        await parseIntBalance(_balance)
+        let balance = await parseIntBalance(_balance)
         const guild = await client.guilds.fetch(guildId)
         const user = await guild.members.fetch(userID)
         await assignRole(user, balance, client);
