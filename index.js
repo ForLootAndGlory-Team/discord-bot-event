@@ -16,7 +16,7 @@ const {
     scholarship,
     character,
     gear
-   // captainQuest
+    // captainQuest
 } = require('./helper/web3Const.js')
 const { Client, GatewayIntentBits, EmbedBuilder, Partials, ActionRowBuilder, ButtonBuilder, ButtonStyle, Events } = require('discord.js');
 
@@ -32,8 +32,13 @@ const client = new Client({
 });
 
 app.get('/', async (req, res) => {
-    await ClaimRole(req.query.wallet, req.query.mes, req.query.userID, client)
-    res.redirect(`${uiHost}/success-role`)
+    try {
+        await ClaimRole(req.query.wallet, req.query.mes, req.query.userID, client)
+        res.redirect(`${uiHost}/success-role`)
+    } catch (error) {
+        res.redirect(`${uiHost}/error-role`)
+    }
+
 });
 
 app.listen(process.env.PORT || port, () => console.log(`App listening`));
