@@ -8,14 +8,18 @@ const {
     EmedGame,
     EmbedNewCharacter,
     EmbedCharacter,
-    EmbedNewGear
+    EmbedNewGear,
+    EmedStartBet,
+    EmedEndingBet,
+    EmedWinner
 } = require('./helper/embed.js');
 const { ClaimRole } = require('./helper/claimRole.js');
 const { addWhitelist } = require('./helper/send.js');
 const {
     scholarship,
     character,
-    gear
+    gear,
+    lottery
     // captainQuest
 } = require('./helper/web3Const.js')
 const { Client, GatewayIntentBits, EmbedBuilder, Partials, ActionRowBuilder, ButtonBuilder, ButtonStyle, Events } = require('discord.js');
@@ -51,6 +55,7 @@ client.once('ready', async () => {
     const ChannelGameAdd = client.channels.cache.get('1030757929663602728');
     const ChannelNewCharacter = client.channels.cache.get('1054398502421143565');
     const ChannelNewGear = client.channels.cache.get('1054781119842758727');
+    const ChannelLottery = client.channels.cache.get('1103289472512184341');
     //const ChannelCaptainQuest = client.channels.cache.get('1093551575240298599');
 
     /*captainQuest.on('ClaimCaptain', async (data) => {
@@ -95,6 +100,18 @@ client.once('ready', async () => {
             let result = await EmbedNewGear('New Gear', data[i])
             ChannelNewGear.send({ embeds: [result.Embed], files: [result.image] })
         }
+    })
+    lottery.on('BetStart', async () => {
+        let result = await EmedStartBet()
+        ChannelLottery.send({ embeds: [result] })
+    })
+    lottery.on('BetEnding', async () => {
+        let result = await EmedEndingBet()
+        ChannelLottery.send({ embeds: [result] })
+    })
+    lottery.on('Winner', async (paid, winner) => {
+        let result = await EmedWinner(paid, winner)
+        ChannelLottery.send({ embeds: [result] })
     })
 });
 

@@ -5,6 +5,46 @@ const { CharacterAnalytic } = require('./pastEvents.js');
 
 const { EmbedBuilder, AttachmentBuilder } = require('discord.js');
 
+async function EmedWinner(paid, winner) {
+    const Embed = new EmbedBuilder()
+        .setColor(0x0099FF)
+        .setTitle(`Lottery Bet Ending`)
+        .setURL('https://forlootandglory.io/')
+        .setDescription(`Draw will start soon bet is closed`)
+        .addFields(
+            { name: 'Jackpot', value: `${paid}` },
+            { name: 'Winner', value: `${winner}` }
+        )
+        .setTimestamp()
+        .setFooter({ text: 'For Loot And Glory', iconURL: 'https://forlootandglory.eth.limo/token_logo.png' });
+    return Embed;
+}
+
+async function EmedEndingBet() {
+    const Embed = new EmbedBuilder()
+        .setColor(0x0099FF)
+        .setTitle(`Lottery Bet Ending`)
+        .setURL('https://forlootandglory.io/')
+        .setDescription(`Draw will start soon bet is closed`)
+        .setTimestamp()
+        .setFooter({ text: 'For Loot And Glory', iconURL: 'https://forlootandglory.eth.limo/token_logo.png' });
+    return Embed;
+}
+
+async function EmedStartBet() {
+    const Embed = new EmbedBuilder()
+        .setColor(0x0099FF)
+        .setTitle(`Lottery Bet Start`)
+        .setURL('https://forlootandglory.io/')
+        .setDescription(`You can bet on dapp lottery tab`)
+        .addFields(
+            { name: 'Ticket', value: `1 FLAG per Ticket` },
+        )
+        .setTimestamp()
+        .setFooter({ text: 'For Loot And Glory', iconURL: 'https://forlootandglory.eth.limo/token_logo.png' });
+    return Embed;
+}
+
 async function EmedRequest(event, requestInfos) {
 
     const gameId = requestInfos.gameId
@@ -114,7 +154,7 @@ async function EmbedCharacter(event, characterId) {
             { name: 'Thirst', value: `${characterInfos.thirst}`, inline: true },
             { name: 'Experience', value: `${characterInfos.experience}`, inline: true },
             { name: 'Level', value: `${(Math.sqrt(characterInfos.experience)).toFixed(0)}` },
-            { name: 'WinRate Common', value: winRateCommon , inline: true},
+            { name: 'WinRate Common', value: winRateCommon, inline: true },
         )
         .addFields(
             { name: 'Boarding Base', value: `${characterInfos.boarding}`, inline: true },
@@ -199,5 +239,8 @@ module.exports = {
     EmedGame,
     EmbedNewCharacter,
     EmbedCharacter,
-    EmbedNewGear
+    EmbedNewGear,
+    EmedStartBet,
+    EmedEndingBet,
+    EmedWinner
 }
