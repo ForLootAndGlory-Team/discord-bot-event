@@ -29,7 +29,7 @@ const character = new ethers.Contract('0xc1e6C2b308369Dd79384D97E22adc9d8933d4BB
 const royalty = new ethers.Contract('0x702cEC12BF55C58fb6dE889fac8A875964E5dA5b', RoyaltyABI, provider);
 const huntCommon = new ethers.Contract('0xD2a8B1a52d1428315e6959111b11bE91Aa6687c2', HuntABI, providerTestnet);
 const gear = new ethers.Contract('0x480d5bdB8EbD40a3e916868ccF7bc7Fddf4a595a', gearABI, providerTestnet);
-const lottery = new ethers.Contract('0x14165d2159B048034104AFaC30ee44B2C426F747', lotteryABI,provider);
+const lottery = new ethers.Contract('0x038620F5B13C3b242FE49E1E163350D738848fBF', lotteryABI,provider);
 //const captainQuest = new ethers.Contract('0x',captainQuestABI,providerTestnet);
 
 module.exports = {
