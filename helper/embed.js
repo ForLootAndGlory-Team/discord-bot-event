@@ -9,7 +9,7 @@ async function EmedWinner(paid, winner) {
     const Embed = new EmbedBuilder()
         .setColor(0x0099FF)
         .setTitle(`Lottery Bet Ending`)
-        .setURL('https://forlootandglory.io/')
+        .setURL('https://app.forlootandglory.io/')
         .setDescription(`Draw will start soon bet is closed`)
         .addFields(
             { name: 'Jackpot', value: `${paid}` },
@@ -24,7 +24,7 @@ async function EmedEndingBet() {
     const Embed = new EmbedBuilder()
         .setColor(0x0099FF)
         .setTitle(`Lottery Bet Ending`)
-        .setURL('https://forlootandglory.io/')
+        .setURL('https://app.forlootandglory.io/')
         .setDescription(`Draw will start soon bet is closed`)
         .setTimestamp()
         .setFooter({ text: 'For Loot And Glory', iconURL: 'https://forlootandglory.eth.limo/token_logo.png' });
@@ -35,7 +35,7 @@ async function EmedStartBet() {
     const Embed = new EmbedBuilder()
         .setColor(0x0099FF)
         .setTitle(`Lottery Bet Start`)
-        .setURL('https://forlootandglory.io/')
+        .setURL('https://app.forlootandglory.io/')
         .setDescription(`You can bet on dapp lottery tab`)
         .addFields(
             { name: 'Ticket', value: `1 FLAG per Ticket` },
@@ -54,7 +54,7 @@ async function EmedRequest(event, requestInfos) {
     const Embed = new EmbedBuilder()
         .setColor(0x0099FF)
         .setTitle(`${event}`)
-        .setURL('https://forlootandglory.io/')
+        .setURL('https://app.forlootandglory.io/')
         .setDescription(`Scholarship ${event}`)
         .addFields(
             { name: 'Game', value: `${GameName}` },
@@ -71,7 +71,7 @@ async function EmedGame(event, gameName) {
     const Embed = new EmbedBuilder()
         .setColor(0x0099FF)
         .setTitle(`${event}`)
-        .setURL('https://forlootandglory.io')
+        .setURL('https://app.forlootandglory.io/')
         .setDescription(`Scholarship ${event}`)
         .addFields(
             { name: 'Game', value: `${GameName}` },
@@ -102,7 +102,7 @@ async function EmbedNewCharacter(event, data) {
         .setColor(0x0099FF)
         .setTitle(`${event}`)
         .setImage(`attachment://${path}.png`)
-        .setURL('https://forlootandglory.io/')
+        .setURL('https://app.forlootandglory.io/')
         .setDescription(`Character #${data.tokenId.toNumber()}`)
         .addFields(
             { name: 'Specialisation', value: `${spe}`, inline: true },
@@ -147,7 +147,7 @@ async function EmbedCharacter(event, characterId) {
         .setColor(0x0099FF)
         .setTitle(`${event}`)
         .setImage(`attachment://${path}.png`)
-        .setURL('https://forlootandglory.io/')
+        .setURL('https://app.forlootandglory.io/')
         .setDescription(`Character #${characterInfos.tokenId}`)
         .addFields(
             { name: 'Specialisation', value: `${spe}`, inline: true },
@@ -214,7 +214,7 @@ async function EmbedNewGear(event, data) {
         .setColor(0x0099FF)
         .setTitle(`${event}`)
         .setImage(`attachment://${path}.png`)
-        .setURL('https://forlootandglory.io/')
+        .setURL('https://app.forlootandglory.io/')
         .setDescription(`Gear #${data.tokenId.toNumber()}`)
         .addFields(
             { name: 'Slot', value: `${spe}`, inline: true },
