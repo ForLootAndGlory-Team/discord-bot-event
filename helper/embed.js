@@ -2,11 +2,12 @@ const {
     scholarship,
     character } = require('./web3Const.js')
 const { CharacterAnalytic } = require('./pastEvents.js');
+const {ethers} = require('ethers');
 
 const { EmbedBuilder, AttachmentBuilder } = require('discord.js');
 
 async function EmedWinner(paid, winner) {
-    const winner_ = winner / 10 ** 18;
+    const winner_ = ethers.utils.formatEther(winner);
     const Embed = new EmbedBuilder()
         .setColor(0x0099FF)
         .setTitle(`Lottery Bet Ending`)
