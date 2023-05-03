@@ -7,15 +7,15 @@ const {ethers} = require('ethers');
 const { EmbedBuilder, AttachmentBuilder } = require('discord.js');
 
 async function EmedWinner(paid, winner) {
-    const winner_ = ethers.utils.formatEther(winner);
+    const paid_ = ethers.utils.formatEther(paid);
     const Embed = new EmbedBuilder()
         .setColor(0x0099FF)
         .setTitle(`Lottery Bet Ending`)
         .setURL('https://app.forlootandglory.io/')
         .setDescription(`Draw will start soon bet is closed`)
         .addFields(
-            { name: 'Jackpot', value: `${paid}` },
-            { name: 'Winner', value: `${winner_}` }
+            { name: 'Jackpot', value: `${paid_}` },
+            { name: 'Winner', value: `${winner}` }
         )
         .setTimestamp()
         .setFooter({ text: 'For Loot And Glory', iconURL: 'https://forlootandglory.eth.limo/token_logo.png' });
