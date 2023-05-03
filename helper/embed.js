@@ -6,6 +6,7 @@ const { CharacterAnalytic } = require('./pastEvents.js');
 const { EmbedBuilder, AttachmentBuilder } = require('discord.js');
 
 async function EmedWinner(paid, winner) {
+    const winner_ = winner / 10 ** 18;
     const Embed = new EmbedBuilder()
         .setColor(0x0099FF)
         .setTitle(`Lottery Bet Ending`)
@@ -13,7 +14,7 @@ async function EmedWinner(paid, winner) {
         .setDescription(`Draw will start soon bet is closed`)
         .addFields(
             { name: 'Jackpot', value: `${paid}` },
-            { name: 'Winner', value: `${winner}` }
+            { name: 'Winner', value: `${winner_}` }
         )
         .setTimestamp()
         .setFooter({ text: 'For Loot And Glory', iconURL: 'https://forlootandglory.eth.limo/token_logo.png' });
