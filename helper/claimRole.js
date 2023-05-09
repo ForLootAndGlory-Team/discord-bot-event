@@ -33,74 +33,78 @@ async function assignRole(user, amountStaked, client) {
     let userRole = ''
     // Amiral
     if (amountStaked >= amiralAmount) {
-       await user.roles.add(landLubberRole)
-       await    user.roles.add(looterRole)
-       await    user.roles.add(smugglerRole)
-       await    user.roles.add(corsairRole)
-       await   user.roles.add(sailingMasterRole)
-       await   user.roles.add(amiralRole)
+        await user.roles.add(landLubberRole)
+        await user.roles.add(looterRole)
+        await user.roles.add(smugglerRole)
+        await user.roles.add(corsairRole)
+        await user.roles.add(sailingMasterRole)
+        await user.roles.add(amiralRole)
         userRole = 'Amiral'
     }
     // Sailing Master
     else if (amountStaked >= sailingMasterAmount && amountStaked < amiralAmount) {
         await user.roles.add(landLubberRole)
-        await   user.roles.add(looterRole)
-        await   user.roles.add(smugglerRole)
-        await   user.roles.add(corsairRole)
-        await   user.roles.add(sailingMasterRole)
-        await   user.roles.remove(amiralRole)
+        await user.roles.add(looterRole)
+        await user.roles.add(smugglerRole)
+        await user.roles.add(corsairRole)
+        await user.roles.add(sailingMasterRole)
+        await user.roles.remove(amiralRole)
         userRole = 'Sailing Master'
     }
     // Corsair
     else if (amountStaked >= corsairAmount && amountStaked < sailingMasterAmount) {
         await user.roles.add(landLubberRole)
-        await   user.roles.add(looterRole)
-        await   user.roles.add(smugglerRole)
-        await   user.roles.add(corsairRole)
-        await    user.roles.remove(amiralRole)
-        await   user.roles.remove(sailingMasterRole)
-         userRole = 'Corsair'
+        await user.roles.add(looterRole)
+        await user.roles.add(smugglerRole)
+        await user.roles.add(corsairRole)
+        await user.roles.remove(amiralRole)
+        await user.roles.remove(sailingMasterRole)
+        userRole = 'Corsair'
     }
     // Smuggler
     else if (amountStaked >= smugglerAmount && amountStaked < corsairAmount) {
         await user.roles.add(landLubberRole)
-        await    user.roles.add(looterRole)
-        await   user.roles.add(smugglerRole)
-        await  user.roles.remove(corsairRole)
-        await   user.roles.remove(amiralRole)
-        await  user.roles.remove(sailingMasterRole)
-         userRole = 'Smuggler'
+        await user.roles.add(looterRole)
+        await user.roles.add(smugglerRole)
+        await user.roles.remove(corsairRole)
+        await user.roles.remove(amiralRole)
+        await user.roles.remove(sailingMasterRole)
+        userRole = 'Smuggler'
     }
     // Looter
     else if (amountStaked >= looterAmount && amountStaked < smugglerAmount) {
         await user.roles.add(landLubberRole)
-        await    user.roles.add(looterRole)
-        await   user.roles.remove(smugglerRole)
-        await   user.roles.remove(corsairRole)
-        await   user.roles.remove(amiralRole)
-        await   user.roles.remove(sailingMasterRole)
+        await user.roles.add(looterRole)
+        await user.roles.remove(smugglerRole)
+        await user.roles.remove(corsairRole)
+        await user.roles.remove(amiralRole)
+        await user.roles.remove(sailingMasterRole)
         userRole = 'Looter'
     }
     // LandLubber
     else if (amountStaked < 100) {
         await user.roles.add(landLubberRole)
-        await    user.roles.remove(looterRole)
-        await   user.roles.remove(smugglerRole)
-        await   user.roles.remove(corsairRole)
-        await   user.roles.remove(amiralRole)
-        await   user.roles.remove(sailingMasterRole)
+        await user.roles.remove(looterRole)
+        await user.roles.remove(smugglerRole)
+        await user.roles.remove(corsairRole)
+        await user.roles.remove(amiralRole)
+        await user.roles.remove(sailingMasterRole)
         userRole = 'Landlubber'
     }
-    let channel = client.channels.cache.get('916655352827744326');
-    channel.send("<@" + user + "> Your Role " + userRole + " has been successfully assigned")
+    let result = {
+        bool: true,
+        user: user,
+        userRole: userRole
+    }
+    return result
 }
 
 async function parseIntBalance(amount) {
     console.log(amount)
-        let balance_ = Number(amount) / 10 ** 18;
-        console.log(balance_)
-        let balance = parseInt(balance_).toFixed(0)
-        console.log('balance: ', balance)
+    let balance_ = Number(amount) / 10 ** 18;
+    console.log(balance_)
+    let balance = parseInt(balance_).toFixed(0)
+    console.log('balance: ', balance)
     return balance;
 }
 

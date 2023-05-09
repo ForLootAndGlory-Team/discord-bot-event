@@ -37,7 +37,11 @@ const client = new Client({
 
 app.get('/', async (req, res) => {
     try {
-        await ClaimRole(req.query.wallet, req.query.mes, req.query.userID, client)
+        let result = await ClaimRole(req.query.wallet, req.query.mes, req.query.userID, client)
+        if (result.bool === true) {
+            let channel = client.channels.cache.get('916655352827744326');
+            channel.send("<@" + user + "> Your Role " + userRole + " has been successfully assigned")
+        }
         res.redirect(`${uiHost}/success-role`)
     } catch (error) {
         res.redirect(`${uiHost}/error-role`)
