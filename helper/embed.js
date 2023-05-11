@@ -2,9 +2,45 @@ const {
     scholarship,
     character } = require('./web3Const.js')
 const { CharacterAnalytic } = require('./pastEvents.js');
-const {ethers} = require('ethers');
+const { ethers } = require('ethers');
 
-const { EmbedBuilder, AttachmentBuilder } = require('discord.js');
+const {
+    EmbedBuilder,
+    AttachmentBuilder,
+    Events,
+    ActivityType,
+    ModalBuilder,
+    TextInputBuilder,
+    TextInputStyle,
+    ActionRowBuilder,
+    ButtonBuilder
+} = require('discord.js');
+
+const modal = new ModalBuilder()
+    .setCustomId('ClaimRole')
+    .setTitle('Claim Role')
+
+const ethereumAddressIput = new TextInputBuilder()
+    .setCustomId('ethereumAddressIput')
+    .setLabel('What is your Polygon Address?')
+    .setStyle(TextInputStyle.Short)
+    .setMaxLength(42)
+    .setMinLength(42)
+    .setRequired(true);
+
+const messageSignInput = new TextInputBuilder()
+    .setCustomId('messageSignInput')
+    .setLabel("What is your message sign?")
+    .setStyle(TextInputStyle.Paragraph)
+    .setMaxLength(132)
+    .setMinLength(132)
+    .setRequired(true);
+
+const firstActionRow = new ActionRowBuilder().addComponents(ethereumAddressIput);
+const secondActionRow = new ActionRowBuilder().addComponents(messageSignInput);
+
+const modalBuild = modal.addComponents(firstActionRow, secondActionRow)
+
 
 async function EmedWinner(paid, winner) {
     const paid_ = ethers.utils.formatEther(paid);
@@ -244,5 +280,6 @@ module.exports = {
     EmbedNewGear,
     EmedStartBet,
     EmedEndingBet,
-    EmedWinner
+    EmedWinner,
+    modalBuild
 }

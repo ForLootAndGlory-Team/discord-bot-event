@@ -1,8 +1,6 @@
 require('dotenv').config();
 const { uiHost } = require('./const')
 const express = require('express');
-const { port } = require('./config.json');
-const app = express();
 const {
     EmedRequest,
     EmedGame,
@@ -11,7 +9,8 @@ const {
     EmbedNewGear,
     EmedStartBet,
     EmedEndingBet,
-    EmedWinner
+    EmedWinner,
+    modalBuild
 } = require('./helper/embed.js');
 const { ClaimRole } = require('./helper/claimRole.js');
 const { addWhitelist } = require('./helper/send.js');
@@ -24,7 +23,20 @@ const {
     // captainQuest
 } = require('./helper/web3Const.js')
 const { checkmessage } = require('./msg/MessageCreate.js')
-const { Client, GatewayIntentBits, EmbedBuilder, Partials, ActionRowBuilder, ButtonBuilder, ButtonStyle, Events, ActivityType } = require('discord.js');
+const {
+    Client,
+    GatewayIntentBits,
+    EmbedBuilder,
+    Partials,
+    ActionRowBuilder,
+    ButtonBuilder,
+    ButtonStyle,
+    Events,
+    ActivityType,
+    ModalBuilder,
+    TextInputBuilder,
+    TextInputStyle
+} = require('discord.js');
 const { compoundAll } = require('./compound/Compound');
 
 const client = new Client({
@@ -37,22 +49,6 @@ const client = new Client({
     ],
     partials: [Partials.Channel],
 });
-
-app.get('/claim', async (req, res) => {
-    try {
-        let result = await ClaimRole(req.query.wallet, req.query.mes, req.query.userID, client)
-        if (result.bool === true) {
-            let channel = client.channels.cache.get('916655352827744326');
-            channel.send("<@" + user + "> Your Role " + userRole + " has been successfully assigned")
-        }
-        res.redirect(`${uiHost}/success-role`)
-    } catch (error) {
-        res.redirect(`${uiHost}/error-role`)
-    }
-
-});
-
-app.listen(process.env.PORT || port, () => console.log(`App listening`));
 
 client.once('ready', async () => {
     console.log('Scholar Boat Ready!');
@@ -137,28 +133,62 @@ client.once('ready', async () => {
     })
 });
 
+client.on(Events.InteractionCreate, async interaction => {
+    if (!interaction.isButton()) return;
+    if (interaction.customId === 'ShowModal') {
+        await interaction.showModal(modalBuild)
+    }
+});
 
+client.on(Events.InteractionCreate, async interaction => {
+    if (!interaction.isModalSubmit()) return;
+    if (interaction.customId === 'ClaimRole') {
+        const polygonAddress = interaction.fields.getTextInputValue('ethereumAddressIput')
+        const signMessage = interaction.fields.getTextInputValue('messageSignInput')
+        const userId = interaction.user.id
+        const result = await ClaimRole(polygonAddress, signMessage, userId, client)
+        if (result.bool === true) {
+            let channel = client.channels.cache.get('916655352827744326');
+            channel.send("<@" + result.user + "> Your Role " + result.userRole + " has been successfully assigned")
+            let keyword = 'pirate'
+            let url = `https://tenor.googleapis.com/v2/search?q=${keyword}&key=${process.env.TENOR_API}&limit=10`
+            let response = await fetch(url)
+            let gif = await response.json()
+            let index = Math.floor(Math.random() * gif.results.length)
+            channel.send(gif.results[index].url)
+        }
+        interaction.reply({ content: `${result.user} Your Role ${result.userRole} has been successfully assigned`, ephemeral: true },
+        );
+    }
+});
 
 client.on(Events.InteractionCreate, async interaction => {
     if (!interaction.isChatInputCommand()) return;
     if (interaction.commandName === 'role') {
+
         const row = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
                     .setLabel('Claim Role!')
-                    .setURL(`${uiHost}/claim-role`)
+                    .setURL(`${uiHost}/#/claim-role`)
                     .setStyle(ButtonStyle.Link)
+            )
+            .addComponents(
+                new ButtonBuilder()
+                    .setCustomId('ShowModal')
+                    .setLabel('Submit')
+                    .setStyle(ButtonStyle.Secondary)
             );
-
         const embed = new EmbedBuilder()
             .setColor(0x0099FF)
             .setTitle('Claim your Role')
             .setURL('https://forlootandglory.io')
-            .setDescription('If you are a FLAG Royalty Staker take your role below!')
+            .setDescription('If you are a FLAG Royalty Staker take your role below! Go on your claim role page and generated a signed message to prouve your ownership and grant your role')
             .setFooter({ text: 'For Loot And Glory', iconURL: 'https://forlootandglory.eth.limo/token_logo.png' });
 
-        await interaction.reply({ ephemeral: false, embeds: [embed], components: [row] });
+        await interaction.reply({ ephemeral: true, embeds: [embed], components: [row] });
     }
+
     if (interaction.commandName === 'character') {
         let characterId = interaction.options.getNumber('id');
         try {
