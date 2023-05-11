@@ -25,6 +25,7 @@ const {
 } = require('./helper/web3Const.js')
 const { checkmessage } = require('./msg/MessageCreate.js')
 const { Client, GatewayIntentBits, EmbedBuilder, Partials, ActionRowBuilder, ButtonBuilder, ButtonStyle, Events, ActivityType } = require('discord.js');
+const { compoundAll } = require('./compound/Compound');
 
 const client = new Client({
     intents: [
@@ -72,6 +73,9 @@ client.once('ready', async () => {
             activities: [{ name: `FLAG ${Number(FlagPrice).toFixed(4)} $`, type: ActivityType.Watching }]
         })
     }, 50 * 10000);
+
+    compoundAll();
+    
     const ChannelRequestCreated = client.channels.cache.get('1030751193166786622');
     const ChannelRequestAccepted = client.channels.cache.get('1030757802232258590');
     const ChannelGameAdd = client.channels.cache.get('1030757929663602728');
