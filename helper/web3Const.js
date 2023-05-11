@@ -1,17 +1,37 @@
 
+const { get } = require('axios');
 const ethers = require('ethers');
+
+const { writePrice } = require('./Helper.js')
 
 const { rpcTestnetURL, rpcURL } = require('../const.js');
 const networkTestnet = {
-    name: "mumbai",
-    chainId: 80001,
-    _defaultProvider: (providers) => new providers.JsonRpcProvider(rpcTestnetURL)
+  name: "mumbai",
+  chainId: 80001,
+  _defaultProvider: (providers) => new providers.JsonRpcProvider(rpcTestnetURL)
 };
 const network = {
-    name: "polygon",
-    chainId: 137,
-    _defaultProvider: (providers) => new providers.JsonRpcProvider(rpcURL)
+  name: "polygon",
+  chainId: 137,
+  _defaultProvider: (providers) => new providers.JsonRpcProvider(rpcURL)
 };
+
+const getCoinGeckoPrice = async (coin) => {
+  try {
+    const url = `https://api.coingecko.com/api/v3/simple/price?ids=${coin}&vs_currencies=usd`;
+    const response = await get(url, {
+      method: 'GET'
+    });
+    let json = { price: response.data[coin].usd }
+    writePrice('flag', json)
+    console.log(json)
+    return response.data[coin].usd;
+  } catch (err) {
+    const { price } = require('../json/flag.json')
+    console.log(price)
+    return price;
+  }
+}
 
 const provider = ethers.getDefaultProvider(network);
 const providerTestnet = ethers.getDefaultProvider(networkTestnet);
@@ -29,23 +49,24 @@ const character = new ethers.Contract('0xc1e6C2b308369Dd79384D97E22adc9d8933d4BB
 const royalty = new ethers.Contract('0x702cEC12BF55C58fb6dE889fac8A875964E5dA5b', RoyaltyABI, provider);
 const huntCommon = new ethers.Contract('0xD2a8B1a52d1428315e6959111b11bE91Aa6687c2', HuntABI, providerTestnet);
 const gear = new ethers.Contract('0x480d5bdB8EbD40a3e916868ccF7bc7Fddf4a595a', gearABI, providerTestnet);
-const lottery = new ethers.Contract('0x038620F5B13C3b242FE49E1E163350D738848fBF', lotteryABI,provider);
+const lottery = new ethers.Contract('0x038620F5B13C3b242FE49E1E163350D738848fBF', lotteryABI, provider);
 //const captainQuest = new ethers.Contract('0x',captainQuestABI,providerTestnet);
 
 module.exports = {
-    networkTestnet,
-    network,
-    provider,
-    providerTestnet,
-    scholarABI,
-    characterABI,
-    RoyaltyABI,
-    gearABI,
-    scholarship,
-    character,
-    royalty,
-    huntCommon,
-    gear,
-    lottery
-    //captainQuest
+  networkTestnet,
+  network,
+  provider,
+  providerTestnet,
+  scholarABI,
+  characterABI,
+  RoyaltyABI,
+  gearABI,
+  scholarship,
+  character,
+  royalty,
+  huntCommon,
+  gear,
+  lottery,
+  getCoinGeckoPrice
+  //captainQuest
 }

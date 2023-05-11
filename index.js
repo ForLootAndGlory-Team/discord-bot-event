@@ -19,10 +19,12 @@ const {
     scholarship,
     character,
     gear,
-    lottery
+    lottery,
+    getCoinGeckoPrice
     // captainQuest
 } = require('./helper/web3Const.js')
-const { Client, GatewayIntentBits, EmbedBuilder, Partials, ActionRowBuilder, ButtonBuilder, ButtonStyle, Events } = require('discord.js');
+const { checkmessage } = require('./msg/MessageCreate.js')
+const { Client, GatewayIntentBits, EmbedBuilder, Partials, ActionRowBuilder, ButtonBuilder, ButtonStyle, Events, ActivityType } = require('discord.js');
 
 const client = new Client({
     intents: [
@@ -35,7 +37,7 @@ const client = new Client({
     partials: [Partials.Channel],
 });
 
-app.get('/', async (req, res) => {
+app.get('/claim', async (req, res) => {
     try {
         let result = await ClaimRole(req.query.wallet, req.query.mes, req.query.userID, client)
         if (result.bool === true) {
@@ -49,11 +51,27 @@ app.get('/', async (req, res) => {
 
 });
 
+app.get('/', (request, response) => {
+    return response.sendFile('index.html', { root: '.' });
+});
+
 app.listen(process.env.PORT || port, () => console.log(`App listening`));
 
 client.once('ready', async () => {
     console.log('Scholar Boat Ready!');
+    const FlagPrice = await getCoinGeckoPrice("for-loot-and-glory")
+    console.log('FLAG price:', FlagPrice)
+    client.user.setPresence({
+        activities: [{ name: `FLAG ${Number(FlagPrice).toFixed(4)} $`, type: ActivityType.Watching }]
+    });
 
+    setInterval(async () => {
+        const FlagPrice = await getCoinGeckoPrice("for-loot-and-glory")
+        console.log('FLAG price:', FlagPrice)
+        client.user.setPresence({
+            activities: [{ name: `FLAG ${Number(FlagPrice).toFixed(4)} $`, type: ActivityType.Watching }]
+        })
+    }, 50 * 10000);
     const ChannelRequestCreated = client.channels.cache.get('1030751193166786622');
     const ChannelRequestAccepted = client.channels.cache.get('1030757802232258590');
     const ChannelGameAdd = client.channels.cache.get('1030757929663602728');
@@ -118,6 +136,8 @@ client.once('ready', async () => {
         ChannelLottery.send({ embeds: [result] })
     })
 });
+
+
 
 client.on(Events.InteractionCreate, async interaction => {
     if (!interaction.isChatInputCommand()) return;
@@ -190,5 +210,10 @@ client.on(Events.InteractionCreate, async interaction => {
         await addWhitelist(address, amount);
     }
 });
+
+client.on("messageCreate", async (msg) => {
+    await checkmessage(msg);
+}
+);
 
 client.login(process.env.TOKEN);
