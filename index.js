@@ -1,7 +1,6 @@
 require('dotenv').config();
 const fs = require('node:fs');
 const path = require('node:path');
-const { uiHost } = require('./const')
 const {
     modalBuild
 } = require('./helper/embed.js');
@@ -22,7 +21,7 @@ const client = new Client({
     intents: [
         GatewayIntentBits.DirectMessages,
         GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildBans,
+        GatewayIntentBits.GuildModeration,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
     ],
@@ -49,10 +48,11 @@ client.once('ready', async () => {
     console.log('The Kid on Fire');
 
     //Loop
-    updatePriceActivity('for-loot-and-glory')
+    updatePriceActivity('for-loot-and-glory', client)
     compoundAll()
-    EventsListener()
 
+    //Listener
+    EventsListener(client)
 });
 
 client.on(Events.InteractionCreate, async interaction => {
@@ -107,5 +107,3 @@ client.on("messageCreate", async (msg) => {
 );
 
 client.login(process.env.TOKEN);
-
-module.exports = { client }

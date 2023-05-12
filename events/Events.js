@@ -1,10 +1,11 @@
+
 const {
-    ChannelRequestCreated,
-    ChannelRequestAccepted,
-    ChannelGameAdd,
-    ChannelNewCharacter,
-    ChannelNewGear,
-    ChannelLottery
+    ChannelRequestCreatedID,
+    ChannelRequestAcceptedID,
+    ChannelGameAddID,
+    ChannelNewCharacterID,
+    ChannelNewGearID,
+    ChannelLotteryID
 } = require("../helper/discordConst");
 const {
     EmedRequest,
@@ -16,40 +17,17 @@ const {
     EmedWinner
 } = require("../helper/embed");
 const {
-    scholarship,
     character,
     gear,
     lottery
 } = require("../helper/web3Const");
 
+const EventsListener = async (client) => {
+    //const ChannelNewCharacter = client.channels.cache.get(ChannelNewCharacterID);
+    //const ChannelNewGear = client.channels.cache.get(ChannelNewGearID);
+    const ChannelLottery = client.channels.cache.get(ChannelLotteryID);
 
-
-const EventsListener = async () => {
-    scholarship.on('RequestCreated', async (requestId) => {
-        console.log("RequestCreated", requestId)
-        const requestInfos = await scholarship.fetchRequestId(requestId)
-        let Embed = await EmedRequest('Request created', requestInfos)
-        ChannelRequestCreated.send({ embeds: [Embed] })
-    });
-
-    scholarship.on('RequestAccepted', async (requestId) => {
-        console.log('RequestAccepted:', requestId)
-        const requestInfos = await scholarship.fetchRequestId(requestId)
-        let Embed = await EmedRequest('Request accepted', requestInfos)
-        ChannelRequestAccepted.send({ embeds: [Embed] })
-    });
-
-    scholarship.on('GameAdd', async (gameName) => {
-        console.log('game', gameName)
-        let Embed = await EmedGame('Game Add', gameName)
-        ChannelGameAdd.send({ embeds: [Embed] })
-    });
-    scholarship.on('GameRemove', async (gameName) => {
-        console.log('game', gameName)
-        let Embed = await EmedGame('Game Remove', gameName)
-        ChannelGameAdd.send({ embeds: [Embed] })
-    });
-    character.on('NewCharacter', async (data) => {
+    /*character.on('NewCharacter', async (data) => {
         console.log('NewCharacter', data.length)
         for (let i = 0; i < data.length; i++) {
             let result = await EmbedNewCharacter('New Character', data[i])
@@ -62,7 +40,7 @@ const EventsListener = async () => {
             let result = await EmbedNewGear('New Gear', data[i])
             ChannelNewGear.send({ embeds: [result.Embed], files: [result.image] })
         }
-    })
+    })*/
     lottery.on('BetStart', async () => {
         let result = await EmedStartBet()
         ChannelLottery.send({ embeds: [result] })

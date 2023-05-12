@@ -20,7 +20,7 @@ const getCoinGeckoPrice = async (coin) => {
     }
   }
 
-  const updatePriceActivity = async (coin) => {
+  const updatePriceActivity = async (coin,client) => {
     const Price = await getCoinGeckoPrice(coin)
     console.log(coin,' price : ', Price)
     client.user.setPresence({
