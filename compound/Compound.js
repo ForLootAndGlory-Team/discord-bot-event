@@ -4,7 +4,7 @@ require('dotenv').config();
 
 const provider = new ethers.providers.JsonRpcProvider("https://polygon-mainnet.g.alchemy.com/v2/yuyhEgKoM-VxgBB9yLAHS41TKRXY6AV2");
 
-const delayHours = 60 * 60 * 1000; // 1 hour in msec
+const delayHours = 3 * 60 * 60 * 1000; // 1 hour in msec
 const signerC = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 const compoundAddrFlagWeth = "0xA92AAf9b83fc08c4C2A274Fde68D9d2E71027f93";
 const compoundAddrFlagMatic = "0x7DECF3893CD7F27603864BfA7Bba92615e6BdDe2";
