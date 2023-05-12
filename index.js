@@ -1,43 +1,22 @@
 require('dotenv').config();
+const fs = require('node:fs');
+const path = require('node:path');
 const { uiHost } = require('./const')
-const express = require('express');
 const {
-    EmedRequest,
-    EmedGame,
-    EmbedNewCharacter,
-    EmbedCharacter,
-    EmbedNewGear,
-    EmedStartBet,
-    EmedEndingBet,
-    EmedWinner,
     modalBuild
 } = require('./helper/embed.js');
 const { ClaimRole } = require('./helper/claimRole.js');
-const { addWhitelist } = require('./helper/send.js');
-const {
-    scholarship,
-    character,
-    gear,
-    lottery,
-    getCoinGeckoPrice
-    // captainQuest
-} = require('./helper/web3Const.js')
 const { checkmessage } = require('./msg/MessageCreate.js')
 const {
     Client,
     GatewayIntentBits,
-    EmbedBuilder,
     Partials,
-    ActionRowBuilder,
-    ButtonBuilder,
-    ButtonStyle,
     Events,
-    ActivityType,
-    ModalBuilder,
-    TextInputBuilder,
-    TextInputStyle
-} = require('discord.js');
+    Collection } = require('discord.js');
 const { compoundAll } = require('./compound/Compound');
+const { updatePriceActivity } = require('./coingecko/Price');
+const { EventsListener } = require('./events/Events');
+const { getRandomGif } = require('./helper/Helper');
 
 const client = new Client({
     intents: [
@@ -50,87 +29,30 @@ const client = new Client({
     partials: [Partials.Channel],
 });
 
+client.commands = new Collection();
+
+const commandsPath = path.join(__dirname, 'commands');
+const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+    const filePath = path.join(commandsPath, file);
+    const command = require(filePath);
+    // Set a new item in the Collection with the key as the command name and the value as the exported module
+    if ('data' in command && 'execute' in command) {
+        client.commands.set(command.data.name, command);
+    } else {
+        console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+    }
+}
+
 client.once('ready', async () => {
-    console.log('Scholar Boat Ready!');
-    const FlagPrice = await getCoinGeckoPrice("for-loot-and-glory")
-    console.log('FLAG price:', FlagPrice)
-    client.user.setPresence({
-        activities: [{ name: `FLAG ${Number(FlagPrice).toFixed(4)} $`, type: ActivityType.Watching }]
-    });
+    console.log('The Kid on Fire');
 
-    setInterval(async () => {
-        const FlagPrice = await getCoinGeckoPrice("for-loot-and-glory")
-        console.log('FLAG price:', FlagPrice)
-        client.user.setPresence({
-            activities: [{ name: `FLAG ${Number(FlagPrice).toFixed(4)} $`, type: ActivityType.Watching }]
-        })
-    }, 50 * 10000);
+    //Loop
+    updatePriceActivity('for-loot-and-glory')
+    compoundAll()
+    EventsListener()
 
-    compoundAll();
-
-    const ChannelRequestCreated = client.channels.cache.get('1030751193166786622');
-    const ChannelRequestAccepted = client.channels.cache.get('1030757802232258590');
-    const ChannelGameAdd = client.channels.cache.get('1030757929663602728');
-    const ChannelNewCharacter = client.channels.cache.get('1054398502421143565');
-    const ChannelNewGear = client.channels.cache.get('1054781119842758727');
-    const ChannelLottery = client.channels.cache.get('1103289472512184341');
-    //const ChannelCaptainQuest = client.channels.cache.get('1093551575240298599');
-
-    /*captainQuest.on('ClaimCaptain', async (data) => {
-        console.log('ClaimCaptain', data)
-        ChannelCaptainQuest.send(`Captain Quest Completed: user: ${data.user} \n characterId: ${data.tokenId}`)
-    })*/
-
-    scholarship.on('RequestCreated', async (requestId) => {
-        console.log("RequestCreated", requestId)
-        const requestInfos = await scholarship.fetchRequestId(requestId)
-        let Embed = await EmedRequest('Request created', requestInfos)
-        ChannelRequestCreated.send({ embeds: [Embed] })
-    });
-
-    scholarship.on('RequestAccepted', async (requestId) => {
-        console.log('RequestAccepted:', requestId)
-        const requestInfos = await scholarship.fetchRequestId(requestId)
-        let Embed = await EmedRequest('Request accepted', requestInfos)
-        ChannelRequestAccepted.send({ embeds: [Embed] })
-    });
-
-    scholarship.on('GameAdd', async (gameName) => {
-        console.log('game', gameName)
-        let Embed = await EmedGame('Game Add', gameName)
-        ChannelGameAdd.send({ embeds: [Embed] })
-    });
-    scholarship.on('GameRemove', async (gameName) => {
-        console.log('game', gameName)
-        let Embed = await EmedGame('Game Remove', gameName)
-        ChannelGameAdd.send({ embeds: [Embed] })
-    });
-    character.on('NewCharacter', async (data) => {
-        console.log('NewCharacter', data.length)
-        for (let i = 0; i < data.length; i++) {
-            let result = await EmbedNewCharacter('New Character', data[i])
-            ChannelNewCharacter.send({ embeds: [result.Embed], files: [result.image] })
-        }
-    })
-    gear.on('NewGear', async (data) => {
-        console.log('New Gear', data.length)
-        for (let i = 0; i < data.length; i++) {
-            let result = await EmbedNewGear('New Gear', data[i])
-            ChannelNewGear.send({ embeds: [result.Embed], files: [result.image] })
-        }
-    })
-    lottery.on('BetStart', async () => {
-        let result = await EmedStartBet()
-        ChannelLottery.send({ embeds: [result] })
-    })
-    lottery.on('BetEnding', async () => {
-        let result = await EmedEndingBet()
-        ChannelLottery.send({ embeds: [result] })
-    })
-    lottery.on('Winner', async (paid, winner) => {
-        let result = await EmedWinner(paid, winner)
-        ChannelLottery.send({ embeds: [result] })
-    })
 });
 
 client.on(Events.InteractionCreate, async interaction => {
@@ -148,14 +70,9 @@ client.on(Events.InteractionCreate, async interaction => {
         const userId = interaction.user.id
         const result = await ClaimRole(polygonAddress, signMessage, userId, client)
         if (result.bool === true) {
-            let channel = client.channels.cache.get('916655352827744326');
+            const channel = client.channels.cache.get('916655352827744326');
             channel.send("<@" + result.user + "> Your Role " + result.userRole + " has been successfully assigned")
-            let keyword = 'pirate'
-            let url = `https://tenor.googleapis.com/v2/search?q=${keyword}&key=${process.env.TENOR_API}&limit=10`
-            let response = await fetch(url)
-            let gif = await response.json()
-            let index = Math.floor(Math.random() * gif.results.length)
-            channel.send(gif.results[index].url)
+            await getRandomGif('pirate', channel)
         }
         interaction.reply({ content: `${result.user} Your Role ${result.userRole} has been successfully assigned`, ephemeral: true },
         );
@@ -164,80 +81,23 @@ client.on(Events.InteractionCreate, async interaction => {
 
 client.on(Events.InteractionCreate, async interaction => {
     if (!interaction.isChatInputCommand()) return;
-    if (interaction.commandName === 'role') {
 
-        const row = new ActionRowBuilder()
-            .addComponents(
-                new ButtonBuilder()
-                    .setLabel('Claim Role!')
-                    .setURL(`${uiHost}/#/claim-role`)
-                    .setStyle(ButtonStyle.Link)
-            )
-            .addComponents(
-                new ButtonBuilder()
-                    .setCustomId('ShowModal')
-                    .setLabel('Submit')
-                    .setStyle(ButtonStyle.Secondary)
-            );
-        const embed = new EmbedBuilder()
-            .setColor(0x0099FF)
-            .setTitle('Claim your Role')
-            .setURL('https://forlootandglory.io')
-            .setDescription('If you are a FLAG Royalty Staker take your role below! Go on your claim role page and generated a signed message to prouve your ownership and grant your role')
-            .setFooter({ text: 'For Loot And Glory', iconURL: 'https://forlootandglory.eth.limo/token_logo.png' });
+    const command = interaction.client.commands.get(interaction.commandName);
 
-        await interaction.reply({ ephemeral: true, embeds: [embed], components: [row] });
+    if (!command) {
+        console.error(`No command matching ${interaction.commandName} was found.`);
+        return;
     }
 
-    if (interaction.commandName === 'character') {
-        let characterId = interaction.options.getNumber('id');
-        try {
-
-            let data = await EmbedCharacter(`Character Infos : #${characterId}`, characterId)
-            await interaction.reply({ ephemeral: true, embeds: [data.Embed], files: [data.image] });
-        } catch (e) {
+    try {
+        await command.execute(interaction);
+    } catch (error) {
+        console.error(error);
+        if (interaction.replied || interaction.deferred) {
+            await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+        } else {
+            await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
         }
-    }
-    if (interaction.commandName === 'gif') {
-        try {
-            let keyword = interaction.options.getString('keyword')
-            let url = `https://tenor.googleapis.com/v2/search?q=${keyword}&key=${process.env.TENOR_API}&limit=10`
-            let response = await fetch(url)
-            let result = await response.json()
-            let index = Math.floor(Math.random() * result.results.length)
-            await interaction.reply(result.results[index].url)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-    if (interaction.commandName === 'whitelist') {
-        let addressesArray = [];
-        let totalSpot = 0;
-        for (const [user, address] of Object.entries(addresses)) {
-            addressesArray.push(address);
-        }
-        for (const [user, amount] of Object.entries(amounts)) {
-            totalSpot += amount;
-        }
-        await interaction.reply(`Nombre de Spot reservé : \n ${(totalSpot)}/10000 \n Les adresses des membres whitelister sont : \n ${(addressesArray)}`)
-    }
-    if (interaction.commandName === 'jsonwhitelist') {
-        let addressesArray = [];
-        let amountsArray = [];
-        for (const [user, address] of Object.entries(addresses)) {
-            addressesArray.push(address);
-        }
-        for (const [user, amount] of Object.entries(amounts)) {
-            amountsArray.push(amount);
-        }
-        await interaction.reply(`${JSON.stringify(addressesArray)} \n ${JSON.stringify(amountsArray)}`)
-    }
-    if (interaction.commandName === 'addwhitelist') {
-        let amount = ['10']
-        let address = []
-        address.push(interaction.options.getString('address'))
-        await interaction.reply(`Address ${address[0]} got ${10} testnet spot!`);
-        await addWhitelist(address, amount);
     }
 });
 
@@ -247,3 +107,5 @@ client.on("messageCreate", async (msg) => {
 );
 
 client.login(process.env.TOKEN);
+
+module.exports = { client }

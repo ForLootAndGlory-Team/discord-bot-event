@@ -1,8 +1,5 @@
 
-const { get } = require('axios');
 const ethers = require('ethers');
-
-const { writePrice } = require('./Helper.js')
 
 const { rpcTestnetURL, rpcURL } = require('../const.js');
 const networkTestnet = {
@@ -15,23 +12,6 @@ const network = {
   chainId: 137,
   _defaultProvider: (providers) => new providers.JsonRpcProvider(rpcURL)
 };
-
-const getCoinGeckoPrice = async (coin) => {
-  try {
-    const url = `https://api.coingecko.com/api/v3/simple/price?ids=${coin}&vs_currencies=usd`;
-    const response = await get(url, {
-      method: 'GET'
-    });
-    let json = { price: response.data[coin].usd }
-    writePrice('flag', json)
-    console.log(json)
-    return response.data[coin].usd;
-  } catch (err) {
-    const { price } = require('../json/flag.json')
-    console.log(price)
-    return price;
-  }
-}
 
 const provider = ethers.getDefaultProvider(network);
 const providerTestnet = ethers.getDefaultProvider(networkTestnet);
