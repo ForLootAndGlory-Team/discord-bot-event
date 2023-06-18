@@ -2,7 +2,7 @@ const { ethers } = require('ethers');
 const abiC = require('./abi/CompoundABI.json');
 require('dotenv').config();
 
-const provider = new ethers.providers.JsonRpcProvider("https://polygon-mainnet.g.alchemy.com/v2/yvXKj2w5MBAVaRL1ldw8bOip_EUwN5cm");
+const provider = new ethers.providers.JsonRpcProvider("https://polygon.llamarpc.com");
 
 const delayHours = 3 * 60 * 60 * 1000; // 1 hour in msec
 const signerC = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
@@ -20,9 +20,10 @@ function gasMargin(a, b) {
 
 async function Compound(contract) {
     console.log(`Compound ${contract} is running and wait for interval.`);
-    let maxFeePerGas = ethers.BigNumber.from(40000000000) // fallback to 40 gwei
-    let maxPriorityFeePerGas = ethers.BigNumber.from(40000000000) // fallback to 40 gwei
+    let maxFeePerGas = ethers.BigNumber.from(0) // fallback to 40 gwei
+    let maxPriorityFeePerGas = ethers.BigNumber.from(0) // fallback to 40 gwei
     const gasEtimated = await contract.estimateGas.compound();
+    let gasParams = {}
     try {
         const { data } = await axios({
             method: 'get',
@@ -36,11 +37,15 @@ async function Compound(contract) {
             Math.ceil(data.fast.maxPriorityFee) + '',
             'gwei'
         )
+        console.log(data)
     } catch (e) {
         console.log(`error: ${e}`);
-    } try {
-        let compound = await contract.compound({ maxFeePerGas, maxPriorityFeePerGas, gasLimit: Math.ceil(gasMargin(gasEtimated, 1.1)) });
-        console.log(`Compound ${contract}!`);
+    }
+    gasParams = { maxFeePerGas, maxPriorityFeePerGas, gasLimit: Math.ceil(gasMargin(gasEtimated, 1.1)) }
+    console.log('Gas Parametre: ',gasParams)
+    try {
+        let compound = await contract.compound(gasParams);
+        console.log(`Compound ${compound}!`);
         const receipt = await compound.wait();
         if (receipt.status) {
             console.log(`Transaction receipt compound ${contract} : https://polygonscan.com/tx/${receipt.logs[1].transactionHash}\n`);
