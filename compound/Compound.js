@@ -26,7 +26,7 @@ async function Compound(contract) {
     try {
         const { data } = await axios({
             method: 'get',
-            url: 'https://gasstation-mainnet.matic.network/v2'
+            url: 'https://gasstation.polygon.technology/v2'
         })
         maxFeePerGas = ethers.utils.parseUnits(
             Math.ceil(data.fast.maxFee) + '',
