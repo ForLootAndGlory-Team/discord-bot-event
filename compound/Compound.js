@@ -2,7 +2,7 @@ const { ethers } = require('ethers');
 const abiC = require('./abi/CompoundABI.json');
 require('dotenv').config();
 
-const provider = new ethers.providers.JsonRpcProvider("https://polygon-mainnet.g.alchemy.com/v2/yuyhEgKoM-VxgBB9yLAHS41TKRXY6AV2");
+const provider = new ethers.providers.JsonRpcProvider("https://polygon-mainnet.g.alchemy.com/v2/yvXKj2w5MBAVaRL1ldw8bOip_EUwN5cm");
 
 const delayHours = 3 * 60 * 60 * 1000; // 1 hour in msec
 const signerC = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
@@ -62,6 +62,7 @@ async function compoundAll() {
 };
 
 module.exports = {
-    compoundAll
+    compoundAll,
+    totalCompound
 }
 

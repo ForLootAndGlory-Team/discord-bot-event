@@ -12,7 +12,7 @@ const {
     Partials,
     Events,
     Collection } = require('discord.js');
-const { compoundAll } = require('./compound/Compound');
+const { compoundAll, totalCompound } = require('./compound/Compound');
 const { updatePriceActivity } = require('./coingecko/Price');
 const { EventsListener } = require('./events/Events');
 const { getRandomGif } = require('./helper/Helper');
@@ -49,6 +49,7 @@ client.once('ready', async () => {
 
     //Loop
     updatePriceActivity('for-loot-and-glory', client)
+    totalCompound()
     compoundAll()
 
     //Listener
