@@ -107,4 +107,36 @@ client.on("messageCreate", async (msg) => {
 }
 );
 
+// add Role
+client.on('messageReactionAdd', (reaction, user) => {
+    console.log('messageReactionAdd');
+    const { name } = reaction.emoji
+    const member = reaction.message.guild.members.cache.get(user.id)
+    //ID du message où il faut réagir
+    if (reaction.message.id === '910490479332839464') {
+        switch (name) {
+            case '✅':
+                //Lubberland
+                member.roles.add('1094612796030865428')
+                break;
+        }
+    }
+});
+
+// Remove role
+client.on('messageReactionRemove', (reaction, user) => {
+    console.log('messageReactionRemove');
+    const { name } = reaction.emoji
+    const member = reaction.message.guild.members.cache.get(user.id)
+    //ID du message où il faut réagir
+    if (reaction.message.id === '910490479332839464') {
+        switch (name) {
+            case '✅':
+                //Lubberland
+                member.roles.remove('1094612796030865428')
+                break;
+        }
+    }
+});
+
 client.login(process.env.TOKEN);
