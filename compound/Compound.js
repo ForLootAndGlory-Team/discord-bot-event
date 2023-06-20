@@ -1,15 +1,15 @@
 const { ethers } = require('ethers');
 const abiC = require('./abi/CompoundABI.json');
+const axios = require('axios');
 require('dotenv').config();
 
-const provider = new ethers.providers.JsonRpcProvider("https://polygon.llamarpc.com");
+const provider = new ethers.providers.JsonRpcProvider("https://rpc-mainnet.maticvigil.com");
 
 const delayHours = 3 * 60 * 60 * 1000; // 1 hour in msec
 const signerC = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 const compoundAddrFlagWeth = "0xA92AAf9b83fc08c4C2A274Fde68D9d2E71027f93";
 const compoundAddrFlagMatic = "0x7DECF3893CD7F27603864BfA7Bba92615e6BdDe2";
 
-const axios = require('axios');
 const contractFlagWeth = new ethers.Contract(compoundAddrFlagWeth, abiC, signerC);
 const contractFlagMatic = new ethers.Contract(compoundAddrFlagMatic, abiC, signerC);
 
@@ -41,11 +41,13 @@ async function Compound(contract) {
     } catch (e) {
         console.log(`error: ${e}`);
     }
-    gasParams = { maxFeePerGas, maxPriorityFeePerGas, gasLimit: Math.ceil(gasMargin(gasEtimated, 1.1)) }
-    console.log('Gas Parametre: ',gasParams)
+    let nonce = await provider.getTransactionCount("0x6Daa6909CA7dCFA4697c1CBdC77318905504d50F")
+    console.log('nonce : ', nonce)
+    gasParams = { maxFeePerGas: maxFeePerGas, maxPriorityFeePerGas: maxPriorityFeePerGas, gasLimit: Math.ceil(gasMargin(gasEtimated, 1.1)), nonce: nonce }
+    console.log('Gas Parametre: ', gasParams)
     try {
         let compound = await contract.compound(gasParams);
-        console.log(`Compound ${compound}!`);
+        console.log(`Compound ${JSON.stringify(compound)}!`);
         const receipt = await compound.wait();
         if (receipt.status) {
             console.log(`Transaction receipt compound ${contract} : https://polygonscan.com/tx/${receipt.logs[1].transactionHash}\n`);
