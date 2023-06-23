@@ -69,7 +69,9 @@ client.on(Events.InteractionCreate, async interaction => {
         const polygonAddress = interaction.fields.getTextInputValue('ethereumAddressIput')
         const signMessage = interaction.fields.getTextInputValue('messageSignInput')
         const userId = interaction.user.id
-        await ClaimRole(polygonAddress, signMessage, userId, client)
+        const result = await ClaimRole(polygonAddress, signMessage, userId, client)
+        interaction.reply({ content: `${result.user} Your Role ${result.userRole} has been successfully assigned`, ephemeral: true },
+        );
     }
 });
 
