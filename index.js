@@ -69,14 +69,7 @@ client.on(Events.InteractionCreate, async interaction => {
         const polygonAddress = interaction.fields.getTextInputValue('ethereumAddressIput')
         const signMessage = interaction.fields.getTextInputValue('messageSignInput')
         const userId = interaction.user.id
-        const result = await ClaimRole(polygonAddress, signMessage, userId, client)
-        if (result.bool === true) {
-            const channel = client.channels.cache.get('916655352827744326');
-            channel.send("<@" + result.user + "> Your Role " + result.userRole + " has been successfully assigned")
-            await getRandomGif('pirate', channel)
-        }
-        interaction.reply({ content: `${result.user} Your Role ${result.userRole} has been successfully assigned`, ephemeral: true },
-        );
+        await ClaimRole(polygonAddress, signMessage, userId, client)
     }
 });
 
