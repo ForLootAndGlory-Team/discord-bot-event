@@ -23,7 +23,7 @@ module.exports = {
             .setColor(0x0099FF)
             .setTitle('Claim your Role')
             .setURL('https://forlootandglory.io')
-            .setDescription('If you are a FLAG Royalty Staker take your role below! Go on your claim role page and generated a signed message to prouve your ownership and grant your role')
+            .setDescription('If you are a FLAG Royalty Staker take your role below! Go on your claim role page and generated a signed message to prove your ownership and grant your role')
             .setFooter({ text: 'For Loot And Glory', iconURL: 'https://forlootandglory.eth.limo/token_logo.png' });
 
         await interaction.reply({ ephemeral: true, embeds: [embed], components: [row] });
