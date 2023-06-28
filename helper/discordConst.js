@@ -4,6 +4,6 @@ const ChannelGameAddID = '1030757929663602728';
 const ChannelNewCharacterID = '1054398502421143565';
 const ChannelNewGearID = '1054781119842758727';
 const ChannelLotteryID = '1103289472512184341';
-const ChannelAdminID = '880478965012246619';
+const ChannelAdminID = '880388916019089422';
 
 module.exports = { ChannelRequestCreatedID, ChannelRequestAcceptedID, ChannelGameAddID, ChannelNewCharacterID, ChannelNewGearID, ChannelLotteryID,ChannelAdminID }
