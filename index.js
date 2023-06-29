@@ -49,8 +49,8 @@ client.once('ready', async () => {
 
     //Loop
     updatePriceActivity('for-loot-and-glory', client)
-    totalCompound(client)
-    compoundAll(client)
+    totalCompound()
+    compoundAll()
 
     //Listener
     EventsListener(client)
