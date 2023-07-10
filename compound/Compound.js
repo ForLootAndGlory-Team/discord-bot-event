@@ -20,7 +20,7 @@ function gasMargin(a, b) {
 }
 
 async function Compound(contract) {
-    console.log(`Compound ${contract} is running and wait for interval.`);
+    console.log(`Compound is running and wait for interval.`);
     let maxFeePerGas = ethers.BigNumber.from(0) // fallback to 40 gwei
     let maxPriorityFeePerGas = ethers.BigNumber.from(0) // fallback to 40 gwei
     const gasEtimated = await contract.estimateGas.compound();
@@ -53,10 +53,9 @@ async function Compound(contract) {
     console.log('Gas Parametre: ', gasParams)
     try {
         let compound = await contract.compound(gasParams);
-        console.log(`Compound ${JSON.stringify(compound)}!`);
         const receipt = await compound.wait();
         if (receipt.status) {
-            console.log(`Transaction receipt compound ${JSON.stringify(contract)} : https://polygonscan.com/tx/${receipt.logs[1].transactionHash}\n`);
+            console.log(`Transaction receipt compound : https://polygonscan.com/tx/${receipt.logs[1].transactionHash}\n`);
         }
     } catch (e) {
         console.log(`error: ${e}`);
