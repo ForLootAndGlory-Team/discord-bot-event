@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./deploy-commands.js && pm2 start ./index.js"
+    "start": "node ./deploy-commands.js && pm2 start ./index.js",
+    "logs": "pm2 logs 0 --lines 200"
   },
   "author": "",
   "license": "ISC",
