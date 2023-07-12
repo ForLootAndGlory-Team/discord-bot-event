@@ -50,8 +50,8 @@ client.once('ready', async () => {
 
     //Loop
     updatePriceActivity('for-loot-and-glory', client)
-    totalCompound(client)
-    compoundAll(client)
+    totalCompound()
+    compoundAll()
 
     //Listener
     EventsListener(client)
@@ -103,6 +103,7 @@ client.on("messageCreate", async (msg) => {
 }
 );
 
+
 // add Role
 client.on(Events.MessageReactionAdd,async (reaction, user) => {
     console.log('messageReactionAdd');
@@ -133,6 +134,17 @@ client.on(Events.MessageReactionAdd,async (reaction, user) => {
 // Remove role
 client.on(Events.MessageReactionRemove,async (reaction, user) => {
     console.log('messageReactionRemove');
+    	// When a reaction is received, check if the structure is partial
+	if (reaction.partial) {
+		// If the message this reaction belongs to was removed, the fetching might result in an API error which should be handled
+		try {
+			await reaction.fetch();
+		} catch (error) {
+			console.error('Something went wrong when fetching the message:', error);
+			// Return as `reaction.message.author` may be undefined/null
+			return;
+		}
+	}
     const { name } = reaction.emoji
     const member = reaction.message.guild.members.cache.get(user.id)
     //ID du message où il faut réagir
