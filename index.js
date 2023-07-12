@@ -26,7 +26,7 @@ const client = new Client({
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildMessageReactions
     ],
-    partials: [Partials.Channel,Partials.Message,Partials.Reaction],
+    partials: [Partials.Channel, Partials.Message, Partials.Reaction,Partials.User],
 });
 
 client.commands = new Collection();
@@ -105,20 +105,21 @@ client.on("messageCreate", async (msg) => {
 
 
 // add Role
-client.on(Events.MessageReactionAdd,async (reaction, user) => {
+client.on(Events.MessageReactionAdd, async (reaction, user) => {
     console.log('messageReactionAdd');
-	// When a reaction is received, check if the structure is partial
-	if (reaction.partial) {
-		// If the message this reaction belongs to was removed, the fetching might result in an API error which should be handled
-		try {
-			await reaction.fetch();
-		} catch (error) {
-			console.error('Something went wrong when fetching the message:', error);
-			// Return as `reaction.message.author` may be undefined/null
-			return;
-		}
-	}
-    const { name } = reaction.emoji.name
+    // When a reaction is received, check if the structure is partial
+    if (reaction.partial) {
+        // If the message this reaction belongs to was removed, the fetching might result in an API error which should be handled
+        try {
+            await reaction.fetch();
+        } catch (error) {
+            console.error('Something went wrong when fetching the message:', error);
+            // Return as `reaction.message.author` may be undefined/null
+            return;
+        }
+    }
+
+    const { name } = reaction.emoji
     const member = reaction.message.guild.members.cache.get(user.id)
     //ID du message où il faut réagir
     if (reaction.message.id === '910490479332839464') {
@@ -132,19 +133,19 @@ client.on(Events.MessageReactionAdd,async (reaction, user) => {
 });
 
 // Remove role
-client.on(Events.MessageReactionRemove,async (reaction, user) => {
+client.on(Events.MessageReactionRemove, async (reaction, user) => {
     console.log('messageReactionRemove');
-    	// When a reaction is received, check if the structure is partial
-	if (reaction.partial) {
-		// If the message this reaction belongs to was removed, the fetching might result in an API error which should be handled
-		try {
-			await reaction.fetch();
-		} catch (error) {
-			console.error('Something went wrong when fetching the message:', error);
-			// Return as `reaction.message.author` may be undefined/null
-			return;
-		}
-	}
+    // When a reaction is received, check if the structure is partial
+    if (reaction.partial) {
+        // If the message this reaction belongs to was removed, the fetching might result in an API error which should be handled
+        try {
+            await reaction.fetch();
+        } catch (error) {
+            console.error('Something went wrong when fetching the message:', error);
+            // Return as `reaction.message.author` may be undefined/null
+            return;
+        }
+    }
     const { name } = reaction.emoji
     const member = reaction.message.guild.members.cache.get(user.id)
     //ID du message où il faut réagir
