@@ -9,7 +9,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./deploy-commands.js && pm2 start ./index.js",
-    "logs": "pm2 logs 0 --lines 200"
+    "logs": "pm2 logs 0 --lines 200",
+    "update": "pm2 update 0"
   },
   "author": "",
   "license": "ISC",

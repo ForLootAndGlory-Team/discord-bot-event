@@ -26,6 +26,6 @@ module.exports = {
             .setDescription('If you are a FLAG Royalty Staker take your role below! Go on your claim role page and generated a signed message to prove your ownership and grant your role')
             .setFooter({ text: 'For Loot And Glory', iconURL: 'https://forlootandglory.eth.limo/token_logo.png' });
 
-        await interaction.reply({ ephemeral: true, embeds: [embed], components: [row] });
+        await interaction.deferReply({ embeds: [embed], components: [row] });
     }
 };

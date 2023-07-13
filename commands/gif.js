@@ -13,7 +13,7 @@ module.exports = {
             let response = await fetch(url)
             let result = await response.json()
             let index = Math.floor(Math.random() * result.results.length)
-            await interaction.reply(result.results[index].url)
+            await interaction.deferReply(result.results[index].url)
         } catch (error) {
             console.log(error)
         }

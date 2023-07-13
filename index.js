@@ -50,7 +50,6 @@ client.once('ready', async () => {
 
     //Loop
     updatePriceActivity('for-loot-and-glory', client)
-    totalCompound()
     compoundAll()
 
     //Listener
@@ -71,7 +70,7 @@ client.on(Events.InteractionCreate, async interaction => {
         const signMessage = interaction.fields.getTextInputValue('messageSignInput')
         const userId = interaction.user.id
         const result = await ClaimRole(polygonAddress, signMessage, userId, client)
-        interaction.reply({ content: `${result.user} Your Role ${result.userRole} has been successfully assigned`, ephemeral: true },
+        await interaction.reply({ content: `${result.user} Your Role ${result.userRole} has been successfully assigned`, ephemeral: true },
         );
     }
 });
