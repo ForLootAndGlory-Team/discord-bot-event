@@ -1,0 +1,966 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_theSea",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_shipNFT",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_rhum",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_royalty",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_treasuryGuild",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_inventoryShip",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IVRFGame",
+        "name": "_consumer",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [],
+    "name": "DurabilityTooLow",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "GasTooLow",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NeedCaptain",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotAllowed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotYours",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "StuffTooLow",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "requestId",
+        "type": "uint256"
+      }
+    ],
+    "name": "BattleLaunch",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint8",
+            "name": "attackerPoints",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "defenderPoints",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint256",
+            "name": "maxBoarding",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "midBoarding",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "maxSailing",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "midSailing",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "maxCharisma",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "midCharisma",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint32",
+            "name": "resultBoarding",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint32",
+            "name": "resultSailing",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint32",
+            "name": "resultCharisma",
+            "type": "uint32"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct InternalTravel.Battle",
+        "name": "battle",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint32",
+            "name": "boarding",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint32",
+            "name": "sailing",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint32",
+            "name": "charisma",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint64",
+            "name": "shipClass",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint64",
+            "name": "captainClass",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint256",
+            "name": "shipId",
+            "type": "uint256"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct InternalTravel.Attacker",
+        "name": "attackerInfos",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint32",
+            "name": "boarding",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint32",
+            "name": "sailing",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint32",
+            "name": "charisma",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint64",
+            "name": "shipClass",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint64",
+            "name": "captainClass",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint256",
+            "name": "shipId",
+            "type": "uint256"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct InternalTravel.Defender",
+        "name": "defenderInfos",
+        "type": "tuple"
+      }
+    ],
+    "name": "BattleResult",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "previousAdminRole",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "newAdminRole",
+        "type": "bytes32"
+      }
+    ],
+    "name": "RoleAdminChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      }
+    ],
+    "name": "RoleGranted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      }
+    ],
+    "name": "RoleRevoked",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "DEFAULT_ADMIN_ROLE",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "VRF_PRICE_ROLE",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "idRival",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "myId",
+        "type": "uint256"
+      }
+    ],
+    "name": "attack",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "shipId",
+        "type": "uint256"
+      }
+    ],
+    "name": "canShipTraveling",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "result",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "shipId",
+        "type": "uint256"
+      }
+    ],
+    "name": "finishTravel",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getAttackPrice",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "shipId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getIsUnderAttack",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getRarity",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getRoleAdmin",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "shipIds",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "getShipInfosArray",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint8",
+            "name": "defenseBuff",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "attackBuff",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint32",
+            "name": "boarding",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint32",
+            "name": "sailing",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint32",
+            "name": "charisma",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint64",
+            "name": "shipClass",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint64",
+            "name": "captainClass",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint256",
+            "name": "captainId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "shipId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "cargoAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "shipTravelTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "shieldTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "shieldBase",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "indexBattle",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "isTraveling",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct InternalTravel.ShipInfos[]",
+        "name": "shipinfos",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getShipTravelInfos",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint8",
+            "name": "defenseBuff",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "attackBuff",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint32",
+            "name": "boarding",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint32",
+            "name": "sailing",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint32",
+            "name": "charisma",
+            "type": "uint32"
+          },
+          {
+            "internalType": "uint64",
+            "name": "shipClass",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint64",
+            "name": "captainClass",
+            "type": "uint64"
+          },
+          {
+            "internalType": "uint256",
+            "name": "captainId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "shipId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "cargoAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "shipTravelTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "shieldTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "shieldBase",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "indexBattle",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "isTraveling",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct InternalTravel.ShipInfos",
+        "name": "shipInfos",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getStartRhumFill",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getToggleBattle",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "startId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "lastId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getTravelActiveShipIds",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "startId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "lastId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      }
+    ],
+    "name": "getUserTravelingShip",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "grantRole",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "hasRole",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "shipId",
+        "type": "uint256"
+      }
+    ],
+    "name": "launchTravel",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "name": "onERC721Received",
+    "outputs": [
+      {
+        "internalType": "bytes4",
+        "name": "",
+        "type": "bytes4"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "renounceRole",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "requestId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "randomWords",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "returnRandomWords",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "revokeRole",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newConsumer",
+        "type": "address"
+      }
+    ],
+    "name": "setConsumer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "setOwner",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IFlagStaking",
+        "name": "_newRoyalty",
+        "type": "address"
+      }
+    ],
+    "name": "setRoyalty",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setTreasuryGuild",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "newPrice",
+        "type": "uint256"
+      }
+    ],
+    "name": "setVrfMaticPrice",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes4",
+        "name": "interfaceId",
+        "type": "bytes4"
+      }
+    ],
+    "name": "supportsInterface",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

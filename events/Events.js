@@ -5,27 +5,31 @@ const {
     ChannelGameAddID,
     ChannelNewCharacterID,
     ChannelNewGearID,
-    ChannelLotteryID
+    ChannelLotteryID,
+    ChannelTravelCID
 } = require("../helper/discordConst");
 const {
-    EmedRequest,
-    EmedGame,
+    EmbedRequest,
+    EmbedGame,
     EmbedNewCharacter,
     EmbedNewGear,
-    EmedStartBet,
-    EmedEndingBet,
-    EmedWinner
+    EmbedStartBet,
+    EmbedEndingBet,
+    EmbedWinner,
+    EmbedBattle
 } = require("../helper/embed");
 const {
     character,
     gear,
-    lottery
+    lottery,
+    travelC
 } = require("../helper/web3Const");
 
 const EventsListener = async (client) => {
     //const ChannelNewCharacter = client.channels.cache.get(ChannelNewCharacterID);
     //const ChannelNewGear = client.channels.cache.get(ChannelNewGearID);
     const ChannelLottery = client.channels.cache.get(ChannelLotteryID);
+    const ChannelTravelC = client.channels.cache.get(ChannelTravelCID);
 
     /*character.on('NewCharacter', async (data) => {
         console.log('NewCharacter', data.length)
@@ -42,16 +46,26 @@ const EventsListener = async (client) => {
         }
     })*/
     lottery.on('BetStart', async () => {
-        let result = await EmedStartBet()
+        let result = await EmbedStartBet()
         ChannelLottery.send({ embeds: [result] })
     })
     lottery.on('BetEnding', async () => {
-        let result = await EmedEndingBet()
+        let result = await EmbedEndingBet()
         ChannelLottery.send({ embeds: [result] })
     })
     lottery.on('Winner', async (paid, winner) => {
-        let result = await EmedWinner(paid, winner)
+        let result = await EmbedWinner(paid, winner)
         ChannelLottery.send({ embeds: [result] })
+    })
+    travelC.on('BattleResult', async (battle, attackerInfos, defenderInfos) => {
+        const data = {
+            battle: battle,
+            attackerInfos: attackerInfos,
+            defenderInfos: defenderInfos
+        }
+        console.log('BattleResult : ', data)
+        let result = await EmbedBattle('Travel Common Battle', data)
+        ChannelTravelC.send({ embeds: [result.Embed], files: [result.image] })
     })
 }
 
