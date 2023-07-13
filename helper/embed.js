@@ -192,8 +192,8 @@ async function EmbedBattle(event, data) {
     let image = undefined
     // Winner
     if (data.battle.attackerPoints < data.battle.defenderPoints) {
-         image = DefImage
-         path = pathDef
+        image = DefImage
+        path = pathDef
     } else {
         image = AtkImage
         path = pathAtk
@@ -203,10 +203,9 @@ async function EmbedBattle(event, data) {
         .setColor(0x0099FF)
         .setTitle(`${event}`)
         .setURL('https://app.forlootandglory.io/')
-        .setDescription(`${event}`)
+        .setDescription(`PVP Battle result of Travel Common`)
         .addFields(
             { name: 'Attacker', value: `Ship Token Id ${data.attackerInfos.shipId.toNumber().toString()}` },
-            { name: '\u200B', value: '\u200B' },
             { name: 'Boarding', value: `${data.attackerInfos.boarding.toString()}`, inline: true },
             { name: 'Sailing', value: `${data.attackerInfos.sailing.toString()}`, inline: true },
             { name: 'Charisma', value: `${data.attackerInfos.charisma.toString()}`, inline: true },
@@ -217,7 +216,6 @@ async function EmbedBattle(event, data) {
         )
         .addFields(
             { name: 'Defender', value: `Ship Token Id ${data.defenderInfos.shipId.toNumber().toString()}` },
-            { name: '\u200B', value: '\u200B' },
             { name: 'Boarding', value: `${data.defenderInfos.boarding.toString()}`, inline: true },
             { name: 'Sailing', value: `${data.defenderInfos.sailing.toString()}`, inline: true },
             { name: 'Charisma', value: `${data.defenderInfos.charisma.toString()}`, inline: true },
@@ -226,7 +224,6 @@ async function EmbedBattle(event, data) {
             { name: '\u200B', value: '\u200B' }
         )
         .addFields(
-            { name: '\u200B', value: '\u200B' },
             { name: 'Sailing Round', value: `${SailResult}`, inline: true },
             { name: 'Charisma Round', value: `${CharResult}`, inline: true },
             { name: 'Boarding Round', value: `${BoardResult}`, inline: true },
