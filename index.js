@@ -26,7 +26,7 @@ const client = new Client({
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildMessageReactions
     ],
-    partials: [Partials.Channel, Partials.Message, Partials.Reaction,Partials.User],
+    partials: [Partials.Channel, Partials.Message, Partials.Reaction, Partials.User],
 });
 
 client.commands = new Collection();
@@ -59,6 +59,7 @@ client.once('ready', async () => {
 client.on(Events.InteractionCreate, async interaction => {
     if (!interaction.isButton()) return;
     if (interaction.customId === 'ShowModal') {
+        console.log('Show Modal : ', interaction.user.id)
         await interaction.showModal(modalBuild)
     }
 });
@@ -70,6 +71,7 @@ client.on(Events.InteractionCreate, async interaction => {
         const signMessage = interaction.fields.getTextInputValue('messageSignInput')
         const userId = interaction.user.id
         const result = await ClaimRole(polygonAddress, signMessage, userId, client)
+        console.log(`${result.user} Your Role ${result.userRole} has been successfully assigned`)
         await interaction.reply({ content: `${result.user} Your Role ${result.userRole} has been successfully assigned`, ephemeral: true },
         );
     }

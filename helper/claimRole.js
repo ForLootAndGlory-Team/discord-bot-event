@@ -123,7 +123,6 @@ async function ClaimRole(wallet, mes, userID, client) {
     } else {
         console.log('failed to recover address')
     }
-    console.log(result)
     return result
 }
 
