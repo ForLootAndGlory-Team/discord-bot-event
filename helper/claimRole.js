@@ -10,7 +10,7 @@ const web3 = new Web3(
 
 // Role Id
 const landLubberRole = '1094612796030865428'
-//const monkeyPounder = '1094971972275937351'
+const monkeyPounderRole = '1094971972275937351'
 const looterRole = '1094613093558005820'
 const smugglerRole = '1094613477127114823'
 const corsairRole = '1094613575219290203'
@@ -18,8 +18,7 @@ const sailingMasterRole = '1094614732125777980'
 const amiralRole = '1094614860526002236'
 
 // Role Stake Amount
-const landLubberAmount = 0;
-//const monkeyPounder = '50' ou 1 Collectible
+const monkeyPounderAmount = 50
 const looterAmount = 100;
 const smugglerAmount = 500;
 const corsairAmount = 1000;
@@ -81,9 +80,21 @@ async function assignRole(user, amountStaked, client) {
         await user.roles.remove(sailingMasterRole)
         userRole = 'Looter'
     }
+    // monkeyPounder
+    else if (amountStaked >= monkeyPounderAmount && amountStaked < looterAmount) {
+        await user.roles.add(landLubberRole)
+        await user.roles.add(monkeyPounderRole)
+        await user.roles.remove(looterRole)
+        await user.roles.remove(smugglerRole)
+        await user.roles.remove(corsairRole)
+        await user.roles.remove(amiralRole)
+        await user.roles.remove(sailingMasterRole)
+        userRole = 'Powder Monkey'
+    }
     // LandLubber
     else if (amountStaked < 100) {
         await user.roles.add(landLubberRole)
+        await user.roles.remove(monkeyPounderRole)
         await user.roles.remove(looterRole)
         await user.roles.remove(smugglerRole)
         await user.roles.remove(corsairRole)
