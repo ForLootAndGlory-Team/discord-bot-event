@@ -34,7 +34,7 @@ const ERC721OrderSchema = new mongoose.Schema({
   sellOrBuyNft: String,
   chainId: String,
   metadata: mongoose.Schema.Types.Mixed,
-}, { _id: false });
+});
 
 const ERC1155OrderSchema = new mongoose.Schema({
   direction: Number,
@@ -53,7 +53,7 @@ const ERC1155OrderSchema = new mongoose.Schema({
   sellOrBuyNft: String,
   chainId: String,
   metadata: mongoose.Schema.Types.Mixed,
-}, { _id: false });
+});
 
 const ERC721Order = mongoose.model('ERC721Order', ERC721OrderSchema);
 const ERC1155Order = mongoose.model('ERC1155Order', ERC1155OrderSchema);

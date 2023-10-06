@@ -76,6 +76,5 @@ const startServer = () => {
 
 // Exportez les fonctions ou objets que vous souhaitez utiliser dans d'autres fichiers
 module.exports = {
-    startServer,
-    // ... autres exports si nécessaire ...
+    startServer
 };
