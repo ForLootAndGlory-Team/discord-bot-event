@@ -17,7 +17,7 @@ const { updatePriceActivity } = require('./coingecko/Price');
 const { EventsListener } = require('./events/Events');
 const { getRandomGif } = require('./helper/Helper');
 
-const { antiSpam } = require('./moderation/antiSpam.js')
+const { startServer } = require('./db/app')
 
 const client = new Client({
     intents: [
@@ -103,13 +103,8 @@ client.on(Events.InteractionCreate, async interaction => {
 
 client.on(Events.MessageCreate, async (msg) => {
     await checkmessage(msg);
-    antiSpam.message(msg);
 }
 );
-
-client.on(Events.GuildMemberRemove, async (member) => {
-    antiSpam.userleave(member);
-});
 
 
 // add Role
@@ -168,3 +163,4 @@ client.on(Events.MessageReactionRemove, async (reaction, user) => {
 });
 
 client.login(process.env.TOKEN);
+startServer();
