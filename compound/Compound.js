@@ -69,6 +69,7 @@ async function totalCompound() {
 };
 
 async function compoundAll() {
+    await totalCompound()
     console.log("Loop start for compound");
     setInterval(totalCompound, delayHours);
 };
