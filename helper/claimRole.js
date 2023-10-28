@@ -18,7 +18,7 @@ const sailingMasterRole = '1094614732125777980'
 const amiralRole = '1094614860526002236'
 
 // Role Stake Amount
-const monkeyPounderAmount = 50
+const monkeyPounderAmount = 1
 const looterAmount = 100;
 const smugglerAmount = 500;
 const corsairAmount = 1000;
