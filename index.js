@@ -163,4 +163,4 @@ client.on(Events.MessageReactionRemove, async (reaction, user) => {
 });
 
 client.login(process.env.TOKEN);
-startServer();
+//startServer();
