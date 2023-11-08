@@ -6,14 +6,17 @@ const checkmessage = async (msg) => {
         case "!flag":
             msg.reply(`contract address Ethereum: 0x9348E94A447bF8B2ec11f374D3F055FD47d936Df\n contract Polygon: 0x9111D6446Ac5b88A84cf06425c6286658368542F`);
             break;
+        case "!x":
+            msg.reply("https://twitter.com/ForLootAndGlory");
+            break;
         case "!kyber":
             msg.reply("SWAP FLAG: https://kyberswap.com/#/swap?inputCurrency=MATIC&outputCurrency=0x9111d6446ac5b88a84cf06425c6286658368542f&networkId=137 \nLP MATIC-FLAG: https://kyberswap.com/add/MATIC/0x9111d6446ac5b88a84cf06425c6286658368542f/0xcfe88814f8ef4bcefeb4483046b7229511e8aa06?networkId=137\nLP WETH-FLAG: https://kyberswap.com/add/0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619/0x9111D6446Ac5b88A84cf06425c6286658368542F/0x30D50b36bE1Fe4BD1D78553F77937cAaBad37F7f");
             break;
-        case "!site":
-            msg.reply("https://www.forlootandglory.io");
-            break;
         case "!app":
             msg.reply("https://app.forlootandglory.io");
+            break;
+        case "!testnet":
+            msg.reply("https://testnet.forlootandglory.io");
             break;
         case "!graph":
             msg.reply("https://dex.guru/token/0x9111d6446ac5b88a84cf06425c6286658368542f-polygon");
@@ -23,9 +26,6 @@ const checkmessage = async (msg) => {
             break;
         case "!testnet":
             msg.reply("https://testnet.forlootandglory.io");
-            break;
-        case "!btc":
-            msg.reply(`https://docs.forlootandglory.io/others/bridge-polygon-to-bitcoin`);
             break;
         case "!efraim":
             msg.reply("https://tenor.com/view/coming-on-my-way-omw-quarantine-going-out-gif-17086064");
