@@ -33,6 +33,7 @@ async function assignRole(user, amountStaked, client) {
     // Amiral
     if (amountStaked >= amiralAmount) {
         await user.roles.add(landLubberRole)
+        await user.roles.add(monkeyPounderRole)
         await user.roles.add(looterRole)
         await user.roles.add(smugglerRole)
         await user.roles.add(corsairRole)
@@ -43,6 +44,7 @@ async function assignRole(user, amountStaked, client) {
     // Sailing Master
     else if (amountStaked >= sailingMasterAmount && amountStaked < amiralAmount) {
         await user.roles.add(landLubberRole)
+        await user.roles.add(monkeyPounderRole)
         await user.roles.add(looterRole)
         await user.roles.add(smugglerRole)
         await user.roles.add(corsairRole)
@@ -53,6 +55,7 @@ async function assignRole(user, amountStaked, client) {
     // Corsair
     else if (amountStaked >= corsairAmount && amountStaked < sailingMasterAmount) {
         await user.roles.add(landLubberRole)
+        await user.roles.add(monkeyPounderRole)
         await user.roles.add(looterRole)
         await user.roles.add(smugglerRole)
         await user.roles.add(corsairRole)
@@ -63,6 +66,7 @@ async function assignRole(user, amountStaked, client) {
     // Smuggler
     else if (amountStaked >= smugglerAmount && amountStaked < corsairAmount) {
         await user.roles.add(landLubberRole)
+        await user.roles.add(monkeyPounderRole)
         await user.roles.add(looterRole)
         await user.roles.add(smugglerRole)
         await user.roles.remove(corsairRole)
@@ -73,6 +77,7 @@ async function assignRole(user, amountStaked, client) {
     // Looter
     else if (amountStaked >= looterAmount && amountStaked < smugglerAmount) {
         await user.roles.add(landLubberRole)
+        await user.roles.add(monkeyPounderRole)
         await user.roles.add(looterRole)
         await user.roles.remove(smugglerRole)
         await user.roles.remove(corsairRole)
