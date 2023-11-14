@@ -108,59 +108,59 @@ client.on(Events.MessageCreate, async (msg) => {
 
 
 // add Role
-client.on(Events.MessageReactionAdd, async (reaction, user) => {
-    console.log('messageReactionAdd');
-    // When a reaction is received, check if the structure is partial
-    if (reaction.partial) {
-        // If the message this reaction belongs to was removed, the fetching might result in an API error which should be handled
-        try {
-            await reaction.fetch();
-        } catch (error) {
-            console.error('Something went wrong when fetching the message:', error);
-            // Return as `reaction.message.author` may be undefined/null
-            return;
-        }
-    }
+// client.on(Events.MessageReactionAdd, async (reaction, user) => {
+//     console.log('messageReactionAdd');
+//     // When a reaction is received, check if the structure is partial
+//     if (reaction.partial) {
+//         // If the message this reaction belongs to was removed, the fetching might result in an API error which should be handled
+//         try {
+//             await reaction.fetch();
+//         } catch (error) {
+//             console.error('Something went wrong when fetching the message:', error);
+//             // Return as `reaction.message.author` may be undefined/null
+//             return;
+//         }
+//     }
 
-    const { name } = reaction.emoji
-    const member = reaction.message.guild.members.cache.get(user.id)
-    //ID du message où il faut réagir
-    if (reaction.message.id === '910490479332839464') {
-        switch (name) {
-            case '✅':
-                //Lubberland
-                member.roles.add('1094612796030865428')
-                break;
-        }
-    }
-});
+//     const { name } = reaction.emoji
+//     const member = reaction.message.guild.members.cache.get(user.id)
+//     //ID du message où il faut réagir
+//     if (reaction.message.id === '910490479332839464') {
+//         switch (name) {
+//             case '✅':
+//                 //Lubberland
+//                 member.roles.add('1094612796030865428')
+//                 break;
+//         }
+//     }
+// });
 
 // Remove role
-client.on(Events.MessageReactionRemove, async (reaction, user) => {
-    console.log('messageReactionRemove');
-    // When a reaction is received, check if the structure is partial
-    if (reaction.partial) {
-        // If the message this reaction belongs to was removed, the fetching might result in an API error which should be handled
-        try {
-            await reaction.fetch();
-        } catch (error) {
-            console.error('Something went wrong when fetching the message:', error);
-            // Return as `reaction.message.author` may be undefined/null
-            return;
-        }
-    }
-    const { name } = reaction.emoji
-    const member = reaction.message.guild.members.cache.get(user.id)
-    //ID du message où il faut réagir
-    if (reaction.message.id === '910490479332839464') {
-        switch (name) {
-            case '✅':
-                //Lubberland
-                member.roles.remove('1094612796030865428')
-                break;
-        }
-    }
-});
+// client.on(Events.MessageReactionRemove, async (reaction, user) => {
+//     console.log('messageReactionRemove');
+//     // When a reaction is received, check if the structure is partial
+//     if (reaction.partial) {
+//         // If the message this reaction belongs to was removed, the fetching might result in an API error which should be handled
+//         try {
+//             await reaction.fetch();
+//         } catch (error) {
+//             console.error('Something went wrong when fetching the message:', error);
+//             // Return as `reaction.message.author` may be undefined/null
+//             return;
+//         }
+//     }
+//     const { name } = reaction.emoji
+//     const member = reaction.message.guild.members.cache.get(user.id)
+//     //ID du message où il faut réagir
+//     if (reaction.message.id === '910490479332839464') {
+//         switch (name) {
+//             case '✅':
+//                 //Lubberland
+//                 member.roles.remove('1094612796030865428')
+//                 break;
+//         }
+//     }
+// });
 
 client.login(process.env.TOKEN);
 //startServer();
