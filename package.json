@@ -9,10 +9,10 @@
   "scripts": {
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./deploy-commands.js && pm2 start index.js --name api",
-    "logs": "pm2 logs api --lines 200",
-    "update": "pm2 save && pm2 update api",
-    "shutdown": "pm2 delete api"
+    "start": "node ./deploy-commands.js && pm2 start index.js --name 1",
+    "logs": "pm2 logs 1 --lines 200",
+    "update": "pm2 save",
+    "shutdown": "pm2 delete 1"
   },
   "author": "",
   "license": "ISC",

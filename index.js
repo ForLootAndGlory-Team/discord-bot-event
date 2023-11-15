@@ -17,7 +17,7 @@ const { updatePriceActivity } = require('./coingecko/Price');
 const { EventsListener } = require('./events/Events');
 const { getRandomGif } = require('./helper/Helper');
 
-const { startServer } = require('./db/app')
+//const { startServer } = require('./db/app')
 
 const client = new Client({
     intents: [
