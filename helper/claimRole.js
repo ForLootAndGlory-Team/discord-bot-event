@@ -16,6 +16,7 @@ const smugglerRole = '1094613477127114823'
 const corsairRole = '1094613575219290203'
 const sailingMasterRole = '1094614732125777980'
 const amiralRole = '1094614860526002236'
+const goldRole = '1188763502425423912'
 
 // Role Stake Amount
 const monkeyPounderAmount = 1
@@ -24,6 +25,7 @@ const smugglerAmount = 500;
 const corsairAmount = 1000;
 const sailingMasterAmount = 5000;
 const amiralAmount = 10000;
+const goldAmount = 20000;
 
 
 const { guildId } = require('../config.json');
@@ -31,7 +33,7 @@ const { guildId } = require('../config.json');
 async function assignRole(user, amountStaked, client) {
     let userRole = ''
     // Amiral
-    if (amountStaked >= amiralAmount) {
+    if (amountStaked >= goldAmount) {
         await user.roles.add(landLubberRole)
         await user.roles.add(monkeyPounderRole)
         await user.roles.add(looterRole)
@@ -39,6 +41,19 @@ async function assignRole(user, amountStaked, client) {
         await user.roles.add(corsairRole)
         await user.roles.add(sailingMasterRole)
         await user.roles.add(amiralRole)
+        await user.roles.add(goldRole)
+        userRole = 'Gold Roger'
+    }
+    else if (amountStaked >= amiralAmount && amountStaked < goldAmount) {
+
+        await user.roles.add(landLubberRole)
+        await user.roles.add(monkeyPounderRole)
+        await user.roles.add(looterRole)
+        await user.roles.add(smugglerRole)
+        await user.roles.add(corsairRole)
+        await user.roles.add(sailingMasterRole)
+        await user.roles.add(amiralRole)
+        await user.roles.remove(goldRole)
         userRole = 'Amiral'
     }
     // Sailing Master
@@ -50,6 +65,7 @@ async function assignRole(user, amountStaked, client) {
         await user.roles.add(corsairRole)
         await user.roles.add(sailingMasterRole)
         await user.roles.remove(amiralRole)
+        await user.roles.remove(goldRole)
         userRole = 'Sailing Master'
     }
     // Corsair
@@ -61,6 +77,7 @@ async function assignRole(user, amountStaked, client) {
         await user.roles.add(corsairRole)
         await user.roles.remove(amiralRole)
         await user.roles.remove(sailingMasterRole)
+        await user.roles.remove(goldRole)
         userRole = 'Corsair'
     }
     // Smuggler
@@ -72,6 +89,7 @@ async function assignRole(user, amountStaked, client) {
         await user.roles.remove(corsairRole)
         await user.roles.remove(amiralRole)
         await user.roles.remove(sailingMasterRole)
+        await user.roles.remove(goldRole)
         userRole = 'Smuggler'
     }
     // Looter
@@ -83,6 +101,7 @@ async function assignRole(user, amountStaked, client) {
         await user.roles.remove(corsairRole)
         await user.roles.remove(amiralRole)
         await user.roles.remove(sailingMasterRole)
+        await user.roles.remove(goldRole)
         userRole = 'Looter'
     }
     // monkeyPounder
@@ -94,6 +113,7 @@ async function assignRole(user, amountStaked, client) {
         await user.roles.remove(corsairRole)
         await user.roles.remove(amiralRole)
         await user.roles.remove(sailingMasterRole)
+        await user.roles.remove(goldRole)
         userRole = 'Powder Monkey'
     }
     // LandLubber
@@ -105,6 +125,7 @@ async function assignRole(user, amountStaked, client) {
         await user.roles.remove(corsairRole)
         await user.roles.remove(amiralRole)
         await user.roles.remove(sailingMasterRole)
+        await user.roles.remove(goldRole)
         userRole = 'Landlubber'
     }
     let result = {
@@ -135,7 +156,7 @@ async function ClaimRole(wallet, mes, userID, client) {
         const guild = await client.guilds.fetch(guildId)
         const user = await guild.members.fetch(userID)
         result = await assignRole(user, balance, client);
-       console.log('success recover address')
+        console.log('success recover address')
     } else {
         console.log('failed to recover address')
     }
