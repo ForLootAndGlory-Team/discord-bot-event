@@ -11,8 +11,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./deploy-commands.js && pm2 start index.js --name 1",
     "logs": "pm2 logs 1 --lines 200",
-    "update": "pm2 save",
-    "shutdown": "pm2 delete 1"
+    "save": "pm2 save",
+    "shutdown": "pm2 delete 1",
+    "update": "pm2 update 1"
   },
   "author": "",
   "license": "ISC",
